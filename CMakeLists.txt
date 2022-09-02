@@ -7,6 +7,11 @@ if (APPLE)
     # -framework OpenGL -framework CoreVideo
     add_compile_definitions(GL_SILENCE_DEPRECATION)
     add_compile_definitions(GLEW_STATIC)
+    include_directories(
+            /usr/local/include
+            /opt/local/include
+            /opt/homebrew/include
+    )
 endif ()
 include_directories(includes/glad/include)
 include_directories(includes/glad/include/glad)
@@ -20,13 +25,43 @@ include_directories(includes/glfw/include/GLFW)
 include_directories(includes/stb)
 include_directories(includes)
 include_directories(src)
+include_directories(
+        includes/imgui
+        includes/imgui/backends
+)
 
-set(SOURCE_FILES main.cpp)
+file(GLOB SRC
+        includes/imgui/*.h
+        includes/imgui/*.cpp
+        )
+
+set(SOURCE_FILES assert main.cpp)
+set(MAIN_PATH ${PROJECT_SOURCE_DIR})
 
 link_directories(${PROJECT_SOURCE_DIR}/lib)
 add_executable(${PROJECT_NAME}
         src/main.cpp
-        includes/glad/src/glad.c)
+        src/Shader.cpp
+        src/Shader.h
+        src/Texture2D.h
+        src/Texture2D.cpp
+        src/Camera.h
+        src/Camera.cpp
+        includes/glad/src/glad.c
+
+        includes/imgui/
+        includes/imgui/backends/imgui_impl_opengl3.h
+        includes/imgui/backends/imgui_impl_opengl3.cpp
+        includes/imgui/backends/imgui_impl_glfw.cpp
+        includes/imgui/backends/imgui_impl_glfw.h
+
+        includes/imgui/imgui.h
+        includes/imgui/imgui.cpp
+        includes/imgui/imgui_draw.cpp
+        includes/imgui/imgui_tables.cpp
+        includes/imgui/imgui_widgets.cpp
+        )
+
 
 target_link_libraries(${PROJECT_NAME}
        glfw3  GLEW GLTools )
