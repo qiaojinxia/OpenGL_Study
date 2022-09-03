@@ -24,6 +24,8 @@ include_directories(includes/glfw/include)
 include_directories(includes/glfw/include/GLFW)
 include_directories(includes/stb)
 include_directories(includes)
+
+
 include_directories(src)
 include_directories(
         includes/imgui
@@ -47,6 +49,24 @@ add_executable(${PROJECT_NAME}
         src/Texture2D.cpp
         src/Camera.h
         src/Camera.cpp
+
+        src/VertexArray.h
+        src/VertexArray.cpp
+        src/VertexBuffer.h
+        src/VertexBuffer.cpp
+        src/VertexBufferLayout.h
+        src/VertexBufferLayout.cpp
+
+        src/tests/Test.cpp
+        src/tests/Test.h
+
+        src/tests/TestClearColor.cpp
+        src/tests/TestClearColor.h
+
+        src/tests/TestDrawBox.cpp
+        src/tests/TestDrawBox.h
+
+
         includes/glad/src/glad.c
 
         includes/imgui/

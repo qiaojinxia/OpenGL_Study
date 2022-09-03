@@ -8,7 +8,7 @@
 namespace OpenGl_3D{
     class Texture2D {
     public:
-        Texture2D(const char* texTurePath,GLuint *texture);
+        Texture2D(const char* texTurePath);
         ~Texture2D();
         void Bind();
         unsigned int GetID();

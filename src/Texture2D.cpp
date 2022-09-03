@@ -9,10 +9,11 @@
 #include <GLFW/glfw3.h>
 
 namespace OpenGl_3D{
-    Texture2D::Texture2D(const char* texTurePath,GLuint *texture) {
+    Texture2D::Texture2D(const char* texTurePath) {
+
         //创建texture
-        GLCall(glGenTextures(1, texture););
-        GLCall(glBindTexture(GL_TEXTURE_2D, *texture));
+        GLCall(glGenTextures(1, &ID););
+        GLCall(glBindTexture(GL_TEXTURE_2D, ID));
 
         //为当前绑定的纹理对象设置环绕、过滤方式
         GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT));
