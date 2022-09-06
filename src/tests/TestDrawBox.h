@@ -22,13 +22,14 @@ namespace OpenGl_3D{
         virtual void OnUpdate(float deltaTime) override;
         virtual void OnRender() override;
         virtual void OnImGuiRender() override;
+        std::shared_ptr<Camera> CurCamera() override;
     private:
         std::unique_ptr<VertexArray> m_VAO;
         std::unique_ptr<VertexBuffer> m_VertexBuffer;
         std::unique_ptr<Shader> m_Shader;
         std::unique_ptr<Texture2D> m_Texture;
         std::unique_ptr< VertexBufferLayout> m_LayOut;
-        std::unique_ptr< Camera> m_Camera;
+        std::shared_ptr< Camera> m_Camera;
         glm::mat4 m_Proj, m_View;
         float deltaTime; // 当前帧与上一帧的时间差
         float lastFrame; // 上一帧的时间

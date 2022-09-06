@@ -22,6 +22,7 @@ namespace OpenGl_3D{
         void setInt(const std::string& name,int value) const;
         void setFloat(const std::string& name,float value) const;
         void setMat4(const std::string& name,glm::mat4& value) const;
+        void setVec3(const std::string& name,float f1,float f2,float f3) const;
         unsigned int GetRenderID();
     private:
         void  checkCompileErrors(unsigned int shader, std::string type);

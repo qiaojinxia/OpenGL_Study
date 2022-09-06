@@ -32,6 +32,11 @@ static bool GLLogCall(const char *function,const char *file,int line)
     return true;
 }
 
+static void Clear()
+{
+    GLCall(glClearColor(0.0f, 0.0f, 0.0f, 1.0f));
+    GLCall(glClear(GL_COLOR_BUFFER_BIT));
+}
 #define GlCall(_FUNC_) if(_FUNC_) std::cout ""
 
 #endif //OPENGL_STUDY_RENDER_H

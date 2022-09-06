@@ -62,7 +62,7 @@ namespace OpenGl_3D{
     }
 
 
-    Camera::Camera(glm::vec3 position, glm::vec3 up, float yaw, float pitch):  Front (glm::vec3(0.0f, 0.0f, -1.0f)) {
+    Camera::Camera(glm::vec3 position, glm::vec3 up, float yaw, float pitch):  Front (glm::vec3(0.0f, 0.0f, -1.0f)),Zoom(ZOOM),MouseSensitivity(SENSITIVITY) {
 
             Position = position;
             WorldUp = up;
