@@ -30,7 +30,7 @@ namespace OpenGl_3D{
         std::unique_ptr<Texture2D> m_Texture;
         std::unique_ptr< VertexBufferLayout> m_LayOut;
         std::shared_ptr< Camera> m_Camera;
-        glm::mat4 m_Proj, m_View;
+        glm::mat4 m_Proj;
         float deltaTime; // 当前帧与上一帧的时间差
         float lastFrame; // 上一帧的时间
         ImVec4 clear_color;

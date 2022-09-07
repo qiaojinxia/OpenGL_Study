@@ -22,10 +22,10 @@ namespace OpenGl_3D{
         std::shared_ptr<Camera> CurCamera() override;
     private:
         std::unique_ptr<VertexBuffer> m_VertexBuffer;
-        std::unique_ptr<Shader> m_Shader;
+        std::unique_ptr<Shader> m_Shader,m_LightShader;
         std::unique_ptr< VertexBufferLayout> m_LayOut;
         std::unique_ptr<VertexArray> m_VAO;
-        glm::mat4 m_Proj, m_View;
+        glm::mat4 m_Proj;
         std::shared_ptr<Camera> m_Camera;
         glm::vec3 lightColor;
     };

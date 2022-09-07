@@ -3,6 +3,7 @@
 //
 #include <glad.h>
 #include <glfw3.h>
+#include <State.h>
 
 #include "TestDrawBox.h"
 static glm::vec3 cubePositions[] = {
@@ -19,7 +20,7 @@ static glm::vec3 cubePositions[] = {
 };
 namespace OpenGl_3D{
     TestDrawBox::TestDrawBox():rotateSpeed(1.0f),cameraSpeed(0.2f),
-    clear_color(ImVec4(0.45f, 0.55f, 0.60f, 1.00f)),deltaTime(0.0f),lastFrame(0.0f),m_Proj(glm::mat4{}),m_View(glm::mat4{}){
+    clear_color(ImVec4(0.45f, 0.55f, 0.60f, 1.00f)),deltaTime(0.0f),lastFrame(0.0f),m_Proj(glm::mat4{}){
         float vertices[] = {
                 -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,0.0f,
                 0.5f, -0.5f, -0.5f,  1.0f, 0.0f,0.0f,
@@ -82,7 +83,6 @@ namespace OpenGl_3D{
 
         m_Camera = std::make_shared<Camera>(glm::vec3(0.0f, 0.0f, 10.0f),glm::vec3(0.0f, 1.0f, 0.0f),YAW, PITCH);
 
-        m_View  = m_Camera->GetViewMatrix();
 
     };
 
@@ -99,7 +99,7 @@ namespace OpenGl_3D{
         lastFrame = currentFrame;              //更新上一帧时间
 
         m_Shader->use();
-        m_View  = m_Camera->GetViewMatrix();
+        auto m_View  = m_Camera->GetViewMatrix();
         //EBo绘制
 //        GLCall( glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO));
 
@@ -139,6 +139,8 @@ namespace OpenGl_3D{
             ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 
             ImGui::SliderFloat3("CameraPos", &m_Camera->Position.x, 0.0f, 100.0f);
+
+            ImGui::DragFloat("cameraSpeed", &State::GetInstance()->m_Camera->MovementSpeed, 0.1f, 1.0f, 10.0f, "%.00f ");
 
             ImGui::SliderFloat("RotateSpeed", &rotateSpeed, 0.0f, 10000.0f);
             ImGui::End();

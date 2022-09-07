@@ -11,16 +11,17 @@
 #include "Window.h"
 namespace OpenGl_3D{
     class InputManager {
-        static bool toggle_cursor;
         static float lastX, lastY;
         static const float sensitivity;
-
     public:
         static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
         static void mouse_callback(GLFWwindow* window, double x_pos, double y_pos);
         static void framebuffer_size_callback(GLFWwindow* window, int width, int height);
         static void scroll_callback(GLFWwindow* window, double x_offset, double y_offset);
         static void Bind(Window&);
+        static void Listen(GLFWwindow* window);
+    public:
+        static bool toggle_cursor;
     };
 }
 

@@ -40,7 +40,6 @@ int main()
 
     InputManager::Bind(*win);
 
-    glfwSwapInterval(1); // Enable vsync
     // Setup Dear ImGui context
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
@@ -69,22 +68,20 @@ int main()
     testMenu->RegisterTest<TestClearColor>("Clear Color");
     testMenu->RegisterTest<TestDrawBox>("3D BoxTexture");
     testMenu->RegisterTest<TestLight>("Light");
-    bool enable_camera =  false;
 
     glEnable(GL_DEPTH_TEST);
+    glfwSwapInterval(1); // Enable vsync
 
     while (!glfwWindowShouldClose(win->getWindowHandler()))
     {
-        if (enable_camera) {
-            //  通知glfw获取鼠标
-            glfwSetInputMode(win->getWindowHandler(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-        }else {
-            glfwSetInputMode(win->getWindowHandler(), GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-        }
-
+        InputManager::Listen(win->getWindowHandler());
         Clear();
         State::GetInstance()->m_Camera = currentTest->CurCamera();
-
+        auto currentFrame = glfwGetTime();
+        if (State::GetInstance()->lastFrame != 0){
+            State::GetInstance()->deltaTime = currentFrame - State::GetInstance()->lastFrame;
+        }
+        State::GetInstance()->lastFrame = currentFrame;
         // Start the Dear ImGui frame
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
@@ -104,22 +101,23 @@ int main()
             ImGui::End();
         }
 
-        ImGui::Begin("Test1");
+        ImGui::Begin("Enable Controller");
         if (ImGui::Button("enable camera")) {
-            if (enable_camera) {
-                enable_camera = false;
+            if (InputManager::toggle_cursor) {
+                InputManager::toggle_cursor = false;
             }
             else {
-                enable_camera = true;
+                InputManager::toggle_cursor = true;
             }
         }
         ImGui::End();
 
         // Rendering
         ImGui::Render();
-        int display_w, display_h;
 
+        int display_w, display_h;
         glfwGetFramebufferSize(win->getWindowHandler(), &display_w, &display_h);
+
         glViewport(0, 0, display_w, display_h);
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
@@ -129,6 +127,7 @@ int main()
         glfwSwapBuffers(win->getWindowHandler());
 
     }
+
     // 当渲染循环结束后我们需要正确释放/删除之前的分配的所有资源
     // ------------------------------------------------------------------
     // Cleanup
@@ -138,33 +137,3 @@ int main()
 
     return 0;
 }
-
-
-void processInput(GLFWwindow *window){
-
-//    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-//        glfwSetWindowShouldClose(window, true);
-//    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-//        cameraPos += cameraSpeed * cameraFront;     //按下W，摄像机向前移动
-//    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-//        cameraPos -= cameraSpeed * cameraFront;     //按下S，摄像机向后移动
-//    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-//        //glm::cross(cameraFront, cameraUp)得出的是摄像机的右方向
-//        cameraSpeed /= 5;
-//        cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed ;  //按下A，摄像机向左移动
-//    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-//        cameraSpeed /= 5;
-//        cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;  //按下D，摄像机向右移动
-
-
-//    glm::vec4 vec(1.0f, 0.0f, 0.0f, 1.0f);  //初始化一个点为(1,0,0,1)
-//    glm::mat4 trans;         //初始化4维单位矩阵
-//    trans = glm::translate(trans, glm::vec3(1.0f, 1.0f, 0.0f));   //创建平移矩阵
-//    vec = trans * vec;       //平移矩阵*点
-//    glm::mat4 trans;
-//    trans = glm::rotate(trans, glm::radians(90.0f), glm::vec3(0.0, 0.0, 1.0));
-//    trans = glm::scale(trans, glm::vec3(0.5, 0.5, 0.5));
-}
-
-
-

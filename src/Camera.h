@@ -55,7 +55,7 @@ namespace OpenGl_3D {
         float Yaw;
         float Pitch;
         // camera options
-        float MovementSpeed;
+        float MovementSpeed{1};
         float MouseSensitivity;
         float Zoom;
 

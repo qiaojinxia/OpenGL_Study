@@ -18,6 +18,7 @@ namespace OpenGl_3D{
     }
 
     void Camera::ProcessMouseMovement(float x_offset, float y_offset, GLboolean constrainPitch){
+
         x_offset *= MouseSensitivity;
         y_offset *= MouseSensitivity;
 
@@ -50,6 +51,7 @@ namespace OpenGl_3D{
     }
 
     void Camera::updateCameraVectors(){
+
         // calculate the new Front vector
         glm::vec3 front;
         front.x = cos(glm::radians(Yaw)) * cos(glm::radians(Pitch));
