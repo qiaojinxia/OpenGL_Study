@@ -6,6 +6,7 @@
 #define OPENGL_STUDY_STATE_H
 #include "Camera.h"
 #include <vector>
+#include "vendor/MaterialReader.h"
 namespace OpenGl_3D{
     class State{
     public:
@@ -17,6 +18,7 @@ namespace OpenGl_3D{
         std::vector<char> GetInput();
         bool CheckInput(char);
     public:
+        std::shared_ptr<Reader::MaterialReader> m_Materials;
         float lastFrame{0};
         float deltaTime{0};
         std::shared_ptr<Camera> m_Camera;

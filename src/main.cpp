@@ -20,7 +20,7 @@
 #include "InputManager.h"
 #include "State.h"
 #include "Render.h"
-
+#include "vendor/MaterialReader.h"
 
 const unsigned int SCR_WIDTH = 1280;
 const unsigned int SCR_HEIGHT = 720;
@@ -76,7 +76,11 @@ int main()
     {
         InputManager::Listen(win->getWindowHandler());
         Clear();
+
         State::GetInstance()->m_Camera = currentTest->CurCamera();
+
+
+        State::GetInstance()->m_Materials =std::make_shared<Reader::MaterialReader>("../assert/material/material");
         auto currentFrame = glfwGetTime();
         if (State::GetInstance()->lastFrame != 0){
             State::GetInstance()->deltaTime = currentFrame - State::GetInstance()->lastFrame;

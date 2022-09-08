@@ -60,6 +60,9 @@ add_executable(${PROJECT_NAME}
         src/Window.h
         src/Window.cpp
 
+        src/vendor/MaterialReader.cpp
+        src/vendor/MaterialReader.h
+
         src/InputManager.h
         src/InputManager.cpp
 
