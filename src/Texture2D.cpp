@@ -35,6 +35,7 @@ namespace OpenGl_3D{
     }
 
     void Texture2D::Bind() {
+        GLCall(glActiveTexture(GL_TEXTURE0)); // 在绑定纹理之前先激活纹理单元
         GLCall(glBindTexture(GL_TEXTURE_2D, ID));
     }
 
@@ -44,5 +45,14 @@ namespace OpenGl_3D{
 
     unsigned int Texture2D::GetID() {
         return ID;
+    }
+
+    void Texture2D::UnBind() {
+        GLCall(glBindTexture(GL_TEXTURE_2D, 0));
+    }
+
+    void Texture2D::Bind(int slot) {
+        GLCall(glActiveTexture(GL_TEXTURE0 + slot)); // 在绑定纹理之前先激活纹理单元
+        GLCall(glBindTexture(GL_TEXTURE_2D, ID));
     }
 }

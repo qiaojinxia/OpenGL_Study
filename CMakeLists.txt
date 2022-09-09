@@ -80,6 +80,9 @@ add_executable(${PROJECT_NAME}
         src/tests/TestDrawBox.cpp
         src/tests/TestDrawBox.h
 
+        src/tests/TestLightMap.cpp
+        src/tests/TestLightMap.h
+
         src/tests/TestLight.cpp
         src/tests/TestLight.h
 

@@ -1,60 +1,61 @@
 //
-// Created by cboy on 2022/9/5.
+// Created by cboy on 2022/9/9.
 //
 
-#include "TestLight.h"
-#include "imgui/imgui.h"
-
+#include "TestLightMap.h"
 #include "State.h"
-
-#include "Render.h"
+#include "imgui/imgui.h"
 static int style_idx;
-static bool RandomColor ;
+static bool RandomColor;
+
 namespace OpenGl_3D{
-    TestLight::TestLight():lightColor(glm::vec3 ()){
+    TestLightMap::TestLightMap():lightColor(glm::vec3 ()){
         float vertices[] = {
-                -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-                0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-                0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-                0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-                -0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-                -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+                // positions          // normals           // texture coords
+                -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f,  0.0f,
+                0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f,  0.0f,
+                0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f,  1.0f,
+                0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f,  1.0f,
+                -0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f,  1.0f,
+                -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f,  0.0f,
 
-                -0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
-                0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
-                0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
-                0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
-                -0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
-                -0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
+                -0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f,  0.0f,
+                0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  1.0f,  0.0f,
+                0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  1.0f,  1.0f,
+                0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  1.0f,  1.0f,
+                -0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f,  1.0f,
+                -0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f,  0.0f,
 
-                -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
-                -0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
-                -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
-                -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
-                -0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
-                -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
+                -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
+                -0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  1.0f,  1.0f,
+                -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
+                -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
+                -0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  0.0f,  0.0f,
+                -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
 
-                0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
-                0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
-                0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
-                0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
-                0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
-                0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
+                0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
+                0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  1.0f,  1.0f,
+                0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
+                0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
+                0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  0.0f,  0.0f,
+                0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
 
-                -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
-                0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
-                0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
-                0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
-                -0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
-                -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
+                -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f,  1.0f,
+                0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  1.0f,  1.0f,
+                0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  1.0f,  0.0f,
+                0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  1.0f,  0.0f,
+                -0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  0.0f,  0.0f,
+                -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f,  1.0f,
 
-                -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
-                0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
-                0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
-                0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
-                -0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
-                -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f
+                -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  1.0f,
+                0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  1.0f,  1.0f,
+                0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f,  0.0f,
+                0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f,  0.0f,
+                -0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  0.0f,
+                -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  1.0f
         };
+
+        m_VAO = std::make_unique<VertexArray>();
 
         m_VertexBuffer = std::make_unique<VertexBuffer>(vertices,sizeof(vertices));
 
@@ -62,15 +63,14 @@ namespace OpenGl_3D{
 
         m_LayOut->Push<float>(3);
         m_LayOut->Push<float>(3);
+        m_LayOut->Push<float>(2);
 
-
-        m_VAO = std::make_unique<VertexArray>();
 
         m_VAO->AddBuffer(*m_VertexBuffer,*m_LayOut);
 
         m_LightShader = std::make_unique<Shader>("../assert/shader/light.vs","../assert/shader/light.fs");
 
-        m_Shader = std::make_unique<Shader>("../assert/shader/light_object.vs","../assert/shader/light_object.fs");
+        m_Shader = std::make_unique<Shader>("../assert/shader/light_map.vs","../assert/shader/light_map.fs");
 
         m_Camera = std::make_shared<Camera>(glm::vec3(0.0f, 0.0f, 3.0f),glm::vec3(0.0f, 1.0f, 0.0f),YAW, PITCH);
 
@@ -78,18 +78,22 @@ namespace OpenGl_3D{
 
         lightColor = glm::vec3(1.0f, 1.0f, 1.0f);
 
+        m_Texture1 = std::make_unique<Texture2D>("../assert/texture/box_wood.jpg");
+        m_Texture2 = std::make_unique<Texture2D>("../assert/texture/border.jpg");
+        m_Shader->use();
+        m_Shader->setInt("material.diffuse", 0);
+        m_Shader->setInt("material.specular", 1);
+    }
+
+    TestLightMap::~TestLightMap(){
 
     }
-    TestLight::~TestLight(){
 
-    }
-
-    void TestLight::OnUpdate(float deltaTime){
+    void TestLightMap::OnUpdate(float deltaTime){
 
         GLCall(glClearColor(0.0,0.0,0.0,0.0));
         GLCall(glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT));
         m_VAO->Bind();
-        m_LightShader->use();
 
 
         glm::vec3 center =  glm::vec3(2.4f, 0.3f, -3.5f);
@@ -103,17 +107,7 @@ namespace OpenGl_3D{
         m = glm::rotate(m,angle,glm::vec3(0.0,0.0,1.0));
         m = glm::translate(m,center);
         auto p2 = m * glm::vec4(0.0,0.0,0.0,1.0) ;
-
-
         auto m_View  = m_Camera->GetViewMatrix();
-
-        m_LightShader->setVec3("lightColor",lightColor.x,lightColor.y,lightColor.z);
-
-        m_LightShader->setMat4("model",m);
-        m_LightShader->setMat4("view",m_View);
-        m_LightShader->setMat4("projection",m_Proj);
-
-        glDrawArrays(GL_TRIANGLES, 0, 36);
 
 
         m_Shader->use();
@@ -123,23 +117,25 @@ namespace OpenGl_3D{
         model1 = glm::scale(model1,glm::vec3 (0.01,0.01,0.01));
         model1 = glm::rotate(model1,45.0f,glm::vec3(1.0,1.0,0.00));
         model1 = glm::translate(model1, glm::vec3( 2.4f, 0.3f, -3.5f));
-        m_Shader->setVec3("lightPos",p2.x,p2.y,p2.z);
-        m_Shader->setVec3("lightColor",lightColor.x,lightColor.y,lightColor.z);
+        m_Shader->setVec3("light.position",p2.x,p2.y,p2.z);
         m_Shader->setVec3("objectColor",0.3f,0.8f,0.3f);
         m_Shader->setMat4("model",model1);
         m_Shader->setMat4("view",m_View);
         m_Shader->setMat4("projection",m_Proj);
         m_Shader->setVec3("viewPos", m_Camera->Position.x,m_Camera->Position.y,m_Camera->Position.z);
+
+
         auto ambient = State::GetInstance()->m_Materials->GetAmbient(items[style_idx]);
         auto diffuse = State::GetInstance()->m_Materials->GetDiffuse(items[style_idx]);
         auto specular = State::GetInstance()->m_Materials->GetSpecular(items[style_idx]);
         auto shininess = State::GetInstance()->m_Materials->GetShininess(items[style_idx]);
 
-        m_Shader->setVec3("material.ambient",  ambient.x, ambient.y, 	ambient.z);
-        m_Shader->setVec3("material.diffuse",   diffuse.x, diffuse.y, 	diffuse.z);
-        m_Shader->setVec3("material.specular", specular.x, specular.y, 	specular.z);
 
         m_Shader->setFloat("material.shininess", 	shininess);
+        m_Texture1->Bind(0);
+        m_Texture2->Bind(1);
+        m_Shader->setInt("material.diffuse", 0);
+        m_Shader->setInt("material.specular", 1);
 
 
         if (RandomColor){
@@ -155,15 +151,27 @@ namespace OpenGl_3D{
         m_Shader->setVec3("light.diffuse",  diffuseColor.x,diffuseColor.y,diffuseColor.z); // 将光照调暗了一些以搭配场景
         m_Shader->setVec3("light.specular", 1.0f, 1.0f, 1.0f);
 
+
         glDrawArrays(GL_TRIANGLES, 0, 36);
+
+
+        m_LightShader->use();
+        m_LightShader->setVec3("lightColor",lightColor.x,lightColor.y,lightColor.z);
+
+        m_LightShader->setMat4("model",m);
+        m_LightShader->setMat4("view",m_View);
+        m_LightShader->setMat4("projection",m_Proj);
+
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+
     }
 
-    void TestLight::OnRender(){
+    void TestLightMap::OnRender(){
 
     }
 
 
-    void TestLight::OnImGuiRender(){
+    void TestLightMap::OnImGuiRender(){
         ImGui::Begin("Hello, world!");
         if (ImGui::Combo("material", &style_idx,items, IM_ARRAYSIZE(items)))
         {
@@ -209,8 +217,9 @@ namespace OpenGl_3D{
         ImGui::End();
     }
 
-    std::shared_ptr<Camera> TestLight::CurCamera() {
+    std::shared_ptr<Camera> TestLightMap::CurCamera() {
         return m_Camera;
     }
+
 
 }

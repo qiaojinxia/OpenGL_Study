@@ -11,6 +11,8 @@ namespace OpenGl_3D{
         Texture2D(const char* texTurePath);
         ~Texture2D();
         void Bind();
+        void Bind(int slot);
+        void UnBind();
         unsigned int GetID();
     private:
         unsigned int ID;

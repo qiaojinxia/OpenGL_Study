@@ -8,7 +8,10 @@
 
 #include <iostream>
 
-
+static const char* items[] = { "emerald", "jade", "obsidian", "pearl", "ruby", "turquoise", "brass",
+                               "bronze", "chrome", "copper", "gold" ,"silver", "black plastic", "cyan plastic", "green plastic" ,"red plastic"
+        , "white plastic", "yellow plastic" ,"black plastic", "cyan plastic", "green plastic", "green plastic" ,"red plastic"
+        , "white plastic" ,"yellow plastic"};
 
 #define ASSERT(x) if(!(x)) __builtin_debugtrap();
 #define GLCall(x) GLClearError();\

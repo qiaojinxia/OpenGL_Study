@@ -10,8 +10,8 @@
 #include <tests/TestClearColor.h>
 #include <tests/TestDrawBox.h>
 #include <tests/TestLight.h>
+#include "tests/TestLightMap.h"
 
-#include "Texture2D.h"
 #include "imgui/imgui.h"
 #include "imgui/backends/imgui_impl_glfw.h"
 #include "imgui/backends/imgui_impl_opengl3.h"
@@ -68,9 +68,10 @@ int main()
     testMenu->RegisterTest<TestClearColor>("Clear Color");
     testMenu->RegisterTest<TestDrawBox>("3D BoxTexture");
     testMenu->RegisterTest<TestLight>("Light");
-
+    testMenu->RegisterTest<TestLightMap>("LightMap");
     glEnable(GL_DEPTH_TEST);
     glfwSwapInterval(1); // Enable vsync
+    State::GetInstance()->m_Materials =std::make_shared<Reader::MaterialReader>("../assert/material/material");
 
     while (!glfwWindowShouldClose(win->getWindowHandler()))
     {
@@ -79,8 +80,6 @@ int main()
 
         State::GetInstance()->m_Camera = currentTest->CurCamera();
 
-
-        State::GetInstance()->m_Materials =std::make_shared<Reader::MaterialReader>("../assert/material/material");
         auto currentFrame = glfwGetTime();
         if (State::GetInstance()->lastFrame != 0){
             State::GetInstance()->deltaTime = currentFrame - State::GetInstance()->lastFrame;
