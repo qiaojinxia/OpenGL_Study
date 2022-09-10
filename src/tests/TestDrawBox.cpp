@@ -3,6 +3,7 @@
 //
 #include <glad.h>
 #include <glfw3.h>
+#include <State.h>
 
 #include "TestDrawBox.h"
 static glm::vec3 cubePositions[] = {
@@ -19,7 +20,7 @@ static glm::vec3 cubePositions[] = {
 };
 namespace OpenGl_3D{
     TestDrawBox::TestDrawBox():rotateSpeed(1.0f),cameraSpeed(0.2f),
-    clear_color(ImVec4(0.45f, 0.55f, 0.60f, 1.00f)),deltaTime(0.0f),lastFrame(0.0f),m_Proj(glm::mat4{}),m_View(glm::mat4{}){
+    clear_color(ImVec4(0.45f, 0.55f, 0.60f, 1.00f)),deltaTime(0.0f),lastFrame(0.0f),m_Proj(glm::mat4{}){
         float vertices[] = {
                 -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,0.0f,
                 0.5f, -0.5f, -0.5f,  1.0f, 0.0f,0.0f,
@@ -74,16 +75,14 @@ namespace OpenGl_3D{
 
         m_VAO->AddBuffer(*m_VertexBuffer,*m_LayOut);
 
-
         m_Shader = std::make_unique<Shader>("../assert/shader/base.vs","../assert/shader/base.fs");
 
         m_Texture = std::make_unique<Texture2D>("../assert/texture/haha.jpg");
 
-
         m_Proj = glm::perspective(glm::radians(45.0f), 1280/720.0f, 0.1f, 100.0f);
 
+        m_Camera = std::make_shared<Camera>(glm::vec3(0.0f, 0.0f, 10.0f),glm::vec3(0.0f, 1.0f, 0.0f),YAW, PITCH);
 
-        m_Camera = std::make_unique<Camera>(glm::vec3(0.0f, 0.0f, 10.0f),glm::vec3(0.0f, 1.0f, 0.0f),YAW, PITCH);
 
     };
 
@@ -98,22 +97,21 @@ namespace OpenGl_3D{
         float currentFrame = glfwGetTime();
 //        auto  deltaTime = currentFrame - lastFrame;  //deltaTime就表示了渲染一帧花的时间
         lastFrame = currentFrame;              //更新上一帧时间
-        m_View  = glm::lookAt(m_Camera->Position, m_Camera->Position + m_Camera->Front, m_Camera->Up);
-        m_Shader->use();
 
+        m_Shader->use();
+        auto m_View  = m_Camera->GetViewMatrix();
         //EBo绘制
 //        GLCall( glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO));
 
 //        GLCall( glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_INT, 0));
-
         m_Texture->Bind();
-        GLCall(auto loc = glad_glGetUniformLocation(m_Shader->GetRenderID(),"ourTexture"));
-
         for (unsigned int i = 0; i < 10; i++)
         {
+
             glm::mat4 model;
             model = glm::scale(model, glm::vec3(0.05, 0.05, 0.05));
             model = glm::translate(model, cubePositions[i]);
+
             model = glm::rotate(model, (float)glfwGetTime() * glm::radians(50.0f)* rotateSpeed, glm::vec3(0.5f, 1.0f, 0.0f));
             m_Shader->setMat4("model",model);
             m_Shader->setMat4("view",m_View);
@@ -142,8 +140,16 @@ namespace OpenGl_3D{
 
             ImGui::SliderFloat3("CameraPos", &m_Camera->Position.x, 0.0f, 100.0f);
 
+            ImGui::DragFloat("cameraSpeed", &State::GetInstance()->m_Camera->MovementSpeed, 0.1f, 1.0f, 10.0f, "%.00f ");
+
             ImGui::SliderFloat("RotateSpeed", &rotateSpeed, 0.0f, 10000.0f);
             ImGui::End();
 
+    }
+
+
+
+    std::shared_ptr<Camera> TestDrawBox::CurCamera() {
+        return m_Camera;
     };
 }

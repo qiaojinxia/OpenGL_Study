@@ -57,6 +57,20 @@ add_executable(${PROJECT_NAME}
         src/VertexBufferLayout.h
         src/VertexBufferLayout.cpp
 
+        src/Window.h
+        src/Window.cpp
+
+        src/vendor/MaterialReader.cpp
+        src/vendor/MaterialReader.h
+
+        src/InputManager.h
+        src/InputManager.cpp
+
+
+        src/State.h
+        src/State.cpp
+
+
         src/tests/Test.cpp
         src/tests/Test.h
 
@@ -65,6 +79,13 @@ add_executable(${PROJECT_NAME}
 
         src/tests/TestDrawBox.cpp
         src/tests/TestDrawBox.h
+
+        src/tests/TestLightMap.cpp
+        src/tests/TestLightMap.h
+
+        src/tests/TestLight.cpp
+        src/tests/TestLight.h
+
 
 
         includes/glad/src/glad.c

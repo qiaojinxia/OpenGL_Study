@@ -7,6 +7,7 @@
 #include <vector>
 #include <functional>
 #include <iostream>
+#include "Camera.h"
 
 namespace OpenGl_3D{
     class Test {
@@ -17,6 +18,7 @@ namespace OpenGl_3D{
         virtual void OnUpdate(float deltaTime) {}
         virtual void OnRender() {}
         virtual void OnImGuiRender() {}
+		virtual std::shared_ptr<Camera> CurCamera(){ return nullptr;} ;
     };
 
     class TestMenu:public Test{
@@ -30,6 +32,7 @@ namespace OpenGl_3D{
 
 			m_Tests.push_back(std::make_pair(name, []() { return new T(); }));
 		}
+
     private:
         Test*& m_CurrentTest;
         std::vector<std::pair<std::string, std::function<Test*()>>> m_Tests;

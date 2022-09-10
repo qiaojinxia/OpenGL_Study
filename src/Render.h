@@ -8,7 +8,10 @@
 
 #include <iostream>
 
-
+static const char* items[] = { "emerald", "jade", "obsidian", "pearl", "ruby", "turquoise", "brass",
+                               "bronze", "chrome", "copper", "gold" ,"silver", "black plastic", "cyan plastic", "green plastic" ,"red plastic"
+        , "white plastic", "yellow plastic" ,"black plastic", "cyan plastic", "green plastic", "green plastic" ,"red plastic"
+        , "white plastic" ,"yellow plastic"};
 
 #define ASSERT(x) if(!(x)) __builtin_debugtrap();
 #define GLCall(x) GLClearError();\
@@ -32,6 +35,11 @@ static bool GLLogCall(const char *function,const char *file,int line)
     return true;
 }
 
+static void Clear()
+{
+    GLCall(glClearColor(0.0f, 0.0f, 0.0f, 1.0f));
+    GLCall(glClear(GL_COLOR_BUFFER_BIT));
+}
 #define GlCall(_FUNC_) if(_FUNC_) std::cout ""
 
 #endif //OPENGL_STUDY_RENDER_H
