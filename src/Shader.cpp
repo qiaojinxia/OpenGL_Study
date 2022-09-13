@@ -114,4 +114,8 @@ namespace OpenGl_3D{
         GLCall(glad_glUniform3f(glGetUniformLocation(ID, name.c_str()),f1,f2,f3));
     }
 
+    void Shader::setVec3(const string &name, glm::vec3 &v) const {
+        GLCall(glad_glUniform3f(glGetUniformLocation(ID, name.c_str()),v.x,v.y,v.z));
+    }
+
 }
