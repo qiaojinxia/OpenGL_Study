@@ -82,6 +82,7 @@ add_executable(${PROJECT_NAME}
         src/tests/TestDrawBox.cpp
         src/tests/TestDrawBox.h
 
+
         src/tests/TestLight.cpp
         src/tests/TestLight.h
 
@@ -95,6 +96,22 @@ add_executable(${PROJECT_NAME}
         src/tests/TestLightMap.cpp
         src/tests/TestLightMap.h
 
+        src/tests/TestLightSpot.h
+        src/tests/TestLightSpot.cpp
+
+
+        src/tests/TestLightSpot.h
+        src/tests/TestLightSpot.cpp
+
+
+        src/light/Light.h
+        src/light/Light.cpp
+
+        src/light/DirLight.h
+        src/light/DirLight.cpp
+
+        src/light/PointLight.h
+        src/light/PointLight.cpp
 
         includes/glad/src/glad.c
 
