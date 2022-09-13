@@ -13,6 +13,7 @@ if (APPLE)
             /opt/homebrew/include
     )
 endif ()
+
 include_directories(includes/glad/include)
 include_directories(includes/glad/include/glad)
 include_directories(includes/glad/include/KHR)
@@ -41,6 +42,7 @@ set(SOURCE_FILES assert main.cpp)
 set(MAIN_PATH ${PROJECT_SOURCE_DIR})
 
 link_directories(${PROJECT_SOURCE_DIR}/lib)
+
 add_executable(${PROJECT_NAME}
         src/main.cpp
         src/Shader.cpp
@@ -80,12 +82,18 @@ add_executable(${PROJECT_NAME}
         src/tests/TestDrawBox.cpp
         src/tests/TestDrawBox.h
 
-        src/tests/TestLightMap.cpp
-        src/tests/TestLightMap.h
-
         src/tests/TestLight.cpp
         src/tests/TestLight.h
 
+
+        src/tests/TestLightMap.cpp
+        src/tests/TestLightMap.h
+
+        src/tests/TestLightCaster.cpp
+        src/tests/TestLightCaster.h
+
+        src/tests/TestLightMap.cpp
+        src/tests/TestLightMap.h
 
 
         includes/glad/src/glad.c

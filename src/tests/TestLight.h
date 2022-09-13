@@ -14,11 +14,11 @@ namespace OpenGl_3D{
     class TestLight : public Test{
     public:
         TestLight();
-        ~TestLight() ;
+        ~TestLight();
 
-        void OnUpdate(float deltaTime) override;
-        void OnRender() override;
-        void OnImGuiRender() override;
+        virtual void OnUpdate(float deltaTime) override;
+        virtual void OnRender() override;
+        virtual void OnImGuiRender() override;
         std::shared_ptr<Camera> CurCamera() override;
     private:
         std::unique_ptr<VertexBuffer> m_VertexBuffer;

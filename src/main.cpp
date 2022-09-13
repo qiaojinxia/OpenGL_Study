@@ -11,6 +11,7 @@
 #include <tests/TestDrawBox.h>
 #include <tests/TestLight.h>
 #include "tests/TestLightMap.h"
+#include "tests/TestLightCaster.h"
 
 #include "imgui/imgui.h"
 #include "imgui/backends/imgui_impl_glfw.h"
@@ -67,8 +68,10 @@ int main()
 
     testMenu->RegisterTest<TestClearColor>("Clear Color");
     testMenu->RegisterTest<TestDrawBox>("3D BoxTexture");
-    testMenu->RegisterTest<TestLight>("Light");
+    testMenu->RegisterTest<TestLight>("Light1");
     testMenu->RegisterTest<TestLightMap>("LightMap");
+    testMenu->RegisterTest<TestLightCaster>("LightCaster");
+
     glEnable(GL_DEPTH_TEST);
     glfwSwapInterval(1); // Enable vsync
     State::GetInstance()->m_Materials =std::make_shared<Reader::MaterialReader>("../assert/material/material");
