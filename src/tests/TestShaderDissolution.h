@@ -1,10 +1,9 @@
 //
-// Created by cboy on 2022/9/3.
+// Created by cboy on 2022/9/14.
 //
 
-#ifndef OPENGL_STUDY_TESTDRAWBOX_H
-#define OPENGL_STUDY_TESTDRAWBOX_H
-
+#ifndef OPENGL_STUDY_TESTSHADERDISSOLUTION_H
+#define OPENGL_STUDY_TESTSHADERDISSOLUTION_H
 #include "Test.h"
 #include "imgui/imgui.h"
 #include "imgui/backends/imgui_impl_glfw.h"
@@ -15,10 +14,10 @@
 #include "Camera.h"
 
 namespace OpenGl_3D{
-    class TestDrawBox: public Test{
+    class TestShaderDissolution : public Test{
     public:
-        TestDrawBox();
-        ~TestDrawBox();
+        TestShaderDissolution();
+        ~TestShaderDissolution();
         virtual void OnUpdate(float deltaTime) override;
         virtual void OnRender() override;
         virtual void OnImGuiRender() override;
@@ -27,19 +26,20 @@ namespace OpenGl_3D{
         std::unique_ptr<VertexArray> m_VAO;
         std::unique_ptr<VertexBuffer> m_VertexBuffer;
         std::unique_ptr<Shader> m_Shader;
-        std::unique_ptr<Texture2D> m_Texture;
+        std::unique_ptr<Texture2D> m_Texture1,m_Texture2;
         std::unique_ptr< VertexBufferLayout> m_LayOut;
         std::shared_ptr< Camera> m_Camera;
         glm::mat4 m_Proj;
         float deltaTime; // 当前帧与上一帧的时间差
         float lastFrame; // 上一帧的时间
-        ImVec4 clear_color;
+        ImVec4 clear_color,burn_color;
         float rotateSpeed ;
         float burnValue ;
         float cameraSpeed;    //用于控制移动速度
     };
 
+
 }
 
 
-#endif //OPENGL_STUDY_TESTDRAWBOX_H
+#endif //OPENGL_STUDY_TESTSHADERDISSOLUTION_H

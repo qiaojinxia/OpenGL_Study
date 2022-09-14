@@ -1,0 +1,47 @@
+//
+// Created by cboy on 2022/9/14.
+//
+
+#ifndef OPENGL_STUDY_MESH_H
+#define OPENGL_STUDY_MESH_H
+#include "vector"
+#include "imgui/imgui.h"
+#include "State.h"
+#include "string"
+#include "Shader.h"
+
+#include "VertexArray.h"
+#include "VertexBufferLayout.h"
+#include "VertexBuffer.h"
+
+namespace OpenGl_3D{
+    struct Vertex {
+        glm::vec3 Position;
+        glm::vec3 Normal;
+        glm::vec2 TexCoords;
+    };
+    struct Texture {
+        unsigned int id;
+        std::string type;
+    };
+    class Mesh {
+    public:
+        /*  网格数据  */
+        std::vector<Vertex> vertices;
+        std::vector<unsigned int> indices;
+        std::vector<Texture> textures;
+
+        /*  函数  */
+        Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<Texture> textures);
+        void Draw(Shader shader);
+    private:
+        /*  渲染数据  */
+        std::unique_ptr<VertexArray> m_VAO;
+        std::unique_ptr<VertexBuffer> m_VertexBuffer;
+        std::unique_ptr< VertexBufferLayout> m_LayOut;
+        /*  函数  */
+        void setupMesh();
+    };
+
+};
+#endif //OPENGL_STUDY_MESH_H

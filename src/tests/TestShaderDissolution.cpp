@@ -1,11 +1,12 @@
 //
-// Created by cboy on 2022/9/3.
+// Created by cboy on 2022/9/14.
 //
+
+#include "TestShaderDissolution.h"
 #include <glad.h>
 #include <glfw3.h>
 #include <State.h>
 
-#include "TestDrawBox.h"
 static glm::vec3 cubePositions[] = {
         glm::vec3( 0.0f,  0.0f,  0.0f),
         glm::vec3( 2.0f,  5.0f, -15.0f),
@@ -20,8 +21,8 @@ static glm::vec3 cubePositions[] = {
 };
 
 namespace OpenGl_3D{
-    TestDrawBox::TestDrawBox():rotateSpeed(1.0f),cameraSpeed(0.2f),
-    clear_color(ImVec4(0.45f, 0.55f, 0.60f, 1.00f)),deltaTime(0.0f),lastFrame(0.0f),m_Proj(glm::mat4{}){
+    TestShaderDissolution::TestShaderDissolution():rotateSpeed(1.0f),cameraSpeed(0.2f),
+                               clear_color(ImVec4(0.45f, 0.55f, 0.60f, 1.00f)),deltaTime(0.0f),lastFrame(0.0f),m_Proj(glm::mat4{}){
         float vertices[] = {
                 -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,0.0f,
                 0.5f, -0.5f, -0.5f,  1.0f, 0.0f,0.0f,
@@ -76,21 +77,27 @@ namespace OpenGl_3D{
 
         m_VAO->AddBuffer(*m_VertexBuffer,*m_LayOut);
 
-        m_Shader = std::make_unique<Shader>("../assert/shader/base.vs","../assert/shader/base_wave.fs");
+        m_Shader = std::make_unique<Shader>("../assert/shader/base_dissolution.vs","../assert/shader/base_dissolution.fs");
 
-        m_Texture = std::make_unique<Texture2D>("../assert/texture/haha.jpg");
 
         m_Proj = glm::perspective(glm::radians(45.0f), 1280/720.0f, 0.1f, 100.0f);
 
         m_Camera = std::make_shared<Camera>(glm::vec3(0.0f, 0.0f, 10.0f),glm::vec3(0.0f, 1.0f, 0.0f),YAW, PITCH);
 
+        m_Texture1 = std::make_unique<Texture2D>("../assert/texture/box_wood.jpg");
+        m_Texture2 = std::make_unique<Texture2D>("../assert/texture/noise1.jpg");
+
+        m_Shader->use();
+        m_Shader->setInt("ourTexture", 0);
+        m_Shader->setInt("noiseTexture", 1);
+
     };
 
-    TestDrawBox::~TestDrawBox(){};
-    void TestDrawBox::OnUpdate(float deltaTime) {
+    TestShaderDissolution::~TestShaderDissolution(){};
+    void TestShaderDissolution::OnUpdate(float deltaTime) {
 
     }
-    void TestDrawBox::OnRender() {
+    void TestShaderDissolution::OnRender() {
         GLCall(glClearColor(clear_color.x, clear_color.y, clear_color.z, clear_color.w));
         GLCall(glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT));
         m_VAO->Bind();
@@ -104,13 +111,14 @@ namespace OpenGl_3D{
 //        GLCall( glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO));
 
 //        GLCall( glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_INT, 0));
-        m_Texture->Bind();
+        m_Texture1->Bind(0);
+        m_Texture2->Bind(1);
 
         m_Shader->setFloat("uTime",State::GetInstance()->lastFrame);
         m_Shader->setFloat("burn_value",burnValue);
+        m_Shader->setVec3("burn_color",burn_color.x,burn_color.y,burn_color.z);
         for (unsigned int i = 0; i < 10; i++)
         {
-
             glm::mat4 model;
             model = glm::scale(model, glm::vec3(0.05, 0.05, 0.05));
             model = glm::translate(model, cubePositions[i]);
@@ -121,40 +129,41 @@ namespace OpenGl_3D{
             m_Shader->setMat4("projection",m_Proj);
             glDrawArrays(GL_TRIANGLES, 0, 36);
         }
-
-
     }
-    void TestDrawBox::OnImGuiRender() {
+    void TestShaderDissolution::OnImGuiRender() {
         // 2. Show a simple window that we create ourselves. We use a Begin/End pair to created a named window.
-            static int counter = 0;
+        static int counter = 0;
 
-            ImGui::Begin("Hello, world!");                          // Create a window called "Hello, world!" and append into it.
+        ImGui::Begin("Hello, world!");                          // Create a window called "Hello, world!" and append into it.
 
-            ImGui::SliderFloat("float", &cameraSpeed, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
-            ImGui::ColorEdit3("clear color", (float*)&clear_color); // Edit 3 floats representing a color
+        ImGui::SliderFloat("float", &cameraSpeed, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
+        ImGui::ColorEdit3("clear color", (float*)&clear_color); // Edit 3 floats representing a color
 
-            if (ImGui::Button("Button"))                            // Buttons return true when clicked (most widgets return true when edited/activated)
-                counter++;
+        if (ImGui::Button("Button"))                            // Buttons return true when clicked (most widgets return true when edited/activated)
+            counter++;
 
-            ImGui::SameLine();
-            ImGui::Text("counter = %d", counter);
+        ImGui::SameLine();
+        ImGui::Text("counter = %d", counter);
 
-            ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+        ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 
-            ImGui::SliderFloat3("CameraPos", &m_Camera->Position.x, 0.0f, 100.0f);
+        ImGui::SliderFloat3("CameraPos", &m_Camera->Position.x, 0.0f, 100.0f);
 
-            ImGui::DragFloat("cameraSpeed", &State::GetInstance()->m_Camera->MovementSpeed, 0.1f, 1.0f, 10.0f, "%.00f ");
+        ImGui::DragFloat("cameraSpeed", &State::GetInstance()->m_Camera->MovementSpeed, 0.1f, 1.0f, 10.0f, "%.00f ");
 
-            ImGui::SliderFloat("RotateSpeed", &rotateSpeed, 0.0f, 10000.0f);
+        ImGui::SliderFloat("RotateSpeed", &rotateSpeed, 0.0f, 10000.0f);
 
-            ImGui::SliderFloat("BurnValue", &burnValue, 0.0f, 10000.0f);
+        ImGui::SliderFloat("BurnValue", &burnValue, 0.0f, 2.0f);
 
-            ImGui::End();
+        ImGui::ColorEdit3("Burn color", (float*)&burn_color);
+
+        ImGui::End();
+
     }
 
 
 
-    std::shared_ptr<Camera> TestDrawBox::CurCamera() {
+    std::shared_ptr<Camera> TestShaderDissolution::CurCamera() {
         return m_Camera;
     };
 }

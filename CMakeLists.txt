@@ -10,9 +10,11 @@ if (APPLE)
     include_directories(
             /usr/local/include
             /opt/local/include
+            /opt/local/include
             /opt/homebrew/include
-    )
+            /usr/local/lib)
 endif ()
+
 
 include_directories(includes/glad/include)
 include_directories(includes/glad/include/glad)
@@ -99,10 +101,14 @@ add_executable(${PROJECT_NAME}
         src/tests/TestLightSpot.h
         src/tests/TestLightSpot.cpp
 
+        src/Mesh.h
+        src/Mesh.cpp
+
+        src/tests/TestShaderDissolution.h
+        src/tests/TestShaderDissolution.cpp
 
         src/tests/TestLightSpot.h
         src/tests/TestLightSpot.cpp
-
 
         src/light/Light.h
         src/light/Light.cpp

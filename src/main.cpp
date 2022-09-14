@@ -13,6 +13,7 @@
 #include "tests/TestLightMap.h"
 #include "tests/TestLightCaster.h"
 #include "tests/TestLightSpot.h"
+#include "tests/TestShaderDissolution.h"
 
 #include "imgui/imgui.h"
 #include "imgui/backends/imgui_impl_glfw.h"
@@ -73,6 +74,7 @@ int main()
     testMenu->RegisterTest<TestLightMap>("LightMap");
     testMenu->RegisterTest<TestLightCaster>("LightCaster");
     testMenu->RegisterTest<TestLightSpot>("SpotLight");
+    testMenu->RegisterTest<TestShaderDissolution>("Dissolution");
     glEnable(GL_DEPTH_TEST);
     glfwSwapInterval(1); // Enable vsync
     State::GetInstance()->m_Materials =std::make_shared<Reader::MaterialReader>("../assert/material/material");
