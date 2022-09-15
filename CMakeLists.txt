@@ -9,12 +9,11 @@ if (APPLE)
     add_compile_definitions(GLEW_STATIC)
     include_directories(
             /usr/local/include
-            /opt/local/include
-            /opt/local/include
-            /opt/homebrew/include
             /usr/local/lib)
 endif ()
 
+find_package(assimp REQUIRED) # 添加assimp
+target_link_libraries(assimp::assimp)
 
 include_directories(includes/glad/include)
 include_directories(includes/glad/include/glad)
@@ -109,6 +108,13 @@ add_executable(${PROJECT_NAME}
 
         src/tests/TestLightSpot.h
         src/tests/TestLightSpot.cpp
+
+        src/Model.h
+        src/Model.cpp
+
+        src/Mesh.h
+        src/Mesh.cpp
+
 
         src/light/Light.h
         src/light/Light.cpp

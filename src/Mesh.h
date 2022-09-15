@@ -14,6 +14,8 @@
 #include "VertexBufferLayout.h"
 #include "VertexBuffer.h"
 
+#include <assimp/postprocess.h>
+
 namespace OpenGl_3D{
     struct Vertex {
         glm::vec3 Position;
@@ -23,6 +25,7 @@ namespace OpenGl_3D{
     struct Texture {
         unsigned int id;
         std::string type;
+        aiString path;  // 我们储存纹理的路径用于与其它纹理进行比较
     };
     class Mesh {
     public:
