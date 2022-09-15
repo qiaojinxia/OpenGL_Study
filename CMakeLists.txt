@@ -12,9 +12,6 @@ if (APPLE)
             /usr/local/lib)
 endif ()
 
-find_package(assimp REQUIRED) # 添加assimp
-target_link_libraries(assimp::assimp)
-
 include_directories(includes/glad/include)
 include_directories(includes/glad/include/glad)
 include_directories(includes/glad/include/KHR)
@@ -27,6 +24,7 @@ include_directories(includes/glfw/include/GLFW)
 include_directories(includes/stb)
 include_directories(includes)
 
+find_package(assimp)
 
 include_directories(src)
 include_directories(
@@ -109,6 +107,9 @@ add_executable(${PROJECT_NAME}
         src/tests/TestLightSpot.h
         src/tests/TestLightSpot.cpp
 
+        src/tests/TestLoadModel.h
+        src/tests/TestLoadModel.cpp
+
         src/Model.h
         src/Model.cpp
 
@@ -125,6 +126,7 @@ add_executable(${PROJECT_NAME}
         src/light/PointLight.h
         src/light/PointLight.cpp
 
+
         includes/glad/src/glad.c
 
         includes/imgui/
@@ -140,6 +142,5 @@ add_executable(${PROJECT_NAME}
         includes/imgui/imgui_widgets.cpp
         )
 
-
 target_link_libraries(${PROJECT_NAME}
-       glfw3  GLEW GLTools )
+       glfw3  GLEW GLTools assimp::assimp)

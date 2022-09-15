@@ -6,7 +6,7 @@
 #define OPENGL_STUDY_POINTLIGHT_H
 #include "Light.h"
 #include "glm/glm.hpp"
-#include "glm/gtc/matrix_transform.hpp""
+#include "glm/gtc/matrix_transform.hpp"
 #include "glm/gtc/type_ptr.hpp"
 #include "string"
 

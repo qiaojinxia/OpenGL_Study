@@ -8,6 +8,8 @@
 #include "State.h"
 
 #include "Render.h"
+
+
 static int style_idx;
 static bool RandomColor ;
 namespace OpenGl_3D{
@@ -77,6 +79,7 @@ namespace OpenGl_3D{
         m_Proj = glm::perspective(glm::radians(m_Camera->Zoom), 1280/720.0f, 0.1f, 100.0f);
 
         lightColor = glm::vec3(1.0f, 1.0f, 1.0f);
+
 
 
     }
@@ -154,7 +157,6 @@ namespace OpenGl_3D{
         m_Shader->setVec3("light.ambient",  ambientColor.x,ambientColor.y,ambientColor.z);
         m_Shader->setVec3("light.diffuse",  diffuseColor.x,diffuseColor.y,diffuseColor.z); // 将光照调暗了一些以搭配场景
         m_Shader->setVec3("light.specular", 1.0f, 1.0f, 1.0f);
-
         glDrawArrays(GL_TRIANGLES, 0, 36);
     }
 

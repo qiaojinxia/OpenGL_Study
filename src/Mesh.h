@@ -39,9 +39,8 @@ namespace OpenGl_3D{
         void Draw(Shader shader);
     private:
         /*  渲染数据  */
-        std::unique_ptr<VertexArray> m_VAO;
-        std::unique_ptr<VertexBuffer> m_VertexBuffer;
-        std::unique_ptr< VertexBufferLayout> m_LayOut;
+        /*  渲染数据  */
+        unsigned int VAO, VBO, EBO;
         /*  函数  */
         void setupMesh();
     };

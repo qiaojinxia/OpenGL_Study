@@ -14,7 +14,7 @@
 #include "tests/TestLightCaster.h"
 #include "tests/TestLightSpot.h"
 #include "tests/TestShaderDissolution.h"
-
+#include "tests/TestLoadModel.h"
 #include "imgui/imgui.h"
 #include "imgui/backends/imgui_impl_glfw.h"
 #include "imgui/backends/imgui_impl_opengl3.h"
@@ -75,6 +75,8 @@ int main()
     testMenu->RegisterTest<TestLightCaster>("LightCaster");
     testMenu->RegisterTest<TestLightSpot>("SpotLight");
     testMenu->RegisterTest<TestShaderDissolution>("Dissolution");
+    testMenu->RegisterTest<TestLoadModel>("Load model");
+
     glEnable(GL_DEPTH_TEST);
     glfwSwapInterval(1); // Enable vsync
     State::GetInstance()->m_Materials =std::make_shared<Reader::MaterialReader>("../assert/material/material");

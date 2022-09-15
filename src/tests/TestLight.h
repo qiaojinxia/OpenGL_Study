@@ -10,6 +10,7 @@
 #include "Texture2D.h"
 #include "VertexArray.h"
 #include "Camera.h"
+
 namespace OpenGl_3D{
     class TestLight : public Test{
     public:
@@ -28,6 +29,7 @@ namespace OpenGl_3D{
         glm::mat4 m_Proj;
         std::shared_ptr<Camera> m_Camera;
         glm::vec3 lightColor;
+
     };
 }
 
