@@ -24,6 +24,7 @@ namespace OpenGl_3D {
         std::unique_ptr<Model> m_Model;
         std::unique_ptr<Shader> m_Shader;
         glm::mat4 m_Proj;
+        glm::vec3 lightColor;
     };
 }
 

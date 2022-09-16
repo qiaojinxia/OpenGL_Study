@@ -22,7 +22,7 @@ namespace OpenGl_3D{
         GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
 
         int width, height, nrChannels;
-        stbi_set_flip_vertically_on_load(true);  //需要在stbi_load()之前调用
+        stbi_set_flip_vertically_on_load(false);  //需要在stbi_load()之前调用
         unsigned char *data = stbi_load(texTurePath, &width, &height, &nrChannels, 0);
         if (data){
             //加载至缓冲区并生成多级渐远纹理
