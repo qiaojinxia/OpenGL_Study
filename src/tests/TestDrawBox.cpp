@@ -21,7 +21,7 @@ static glm::vec3 cubePositions[] = {
 
 namespace OpenGl_3D{
     TestDrawBox::TestDrawBox():rotateSpeed(1.0f),cameraSpeed(0.2f),
-    clear_color(ImVec4(0.45f, 0.55f, 0.60f, 1.00f)),deltaTime(0.0f),lastFrame(0.0f),m_Proj(glm::mat4{}){
+    clear_color(ImVec4(0.45f, 0.55f, 0.60f, 1.00f)),deltaTime(0.0f),lastFrame(0.0f){
         float vertices[] = {
                 -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,0.0f,
                 0.5f, -0.5f, -0.5f,  1.0f, 0.0f,0.0f,
@@ -80,10 +80,6 @@ namespace OpenGl_3D{
 
         m_Texture = std::make_unique<Texture2D>("../assert/texture/haha.jpg");
 
-        m_Proj = glm::perspective(glm::radians(45.0f), 1280/720.0f, 0.1f, 100.0f);
-
-        m_Camera = std::make_shared<Camera>(glm::vec3(0.0f, 0.0f, 10.0f),glm::vec3(0.0f, 1.0f, 0.0f),YAW, PITCH);
-
     };
 
     TestDrawBox::~TestDrawBox(){};
@@ -99,7 +95,7 @@ namespace OpenGl_3D{
         lastFrame = currentFrame;              //更新上一帧时间
 
         m_Shader->use();
-        auto m_View  = m_Camera->GetViewMatrix();
+        auto m_View  = State::GetInstance()->GetCamera()->GetViewMatrix();
         //EBo绘制
 //        GLCall( glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO));
 
@@ -118,7 +114,8 @@ namespace OpenGl_3D{
             model = glm::rotate(model, (float)glfwGetTime() * glm::radians(50.0f)* rotateSpeed, glm::vec3(0.5f, 1.0f, 0.0f));
             m_Shader->setMat4("model",model);
             m_Shader->setMat4("view",m_View);
-            m_Shader->setMat4("projection",m_Proj);
+            auto proj = State::GetInstance()->GetCamera()->getProjectionMatrix();
+            m_Shader->setMat4("projection",proj);
             glDrawArrays(GL_TRIANGLES, 0, 36);
         }
 
@@ -141,7 +138,7 @@ namespace OpenGl_3D{
 
             ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 
-            ImGui::SliderFloat3("CameraPos", &m_Camera->Position.x, 0.0f, 100.0f);
+            ImGui::SliderFloat3("CameraPos", &State::GetInstance()->GetCamera()->Position.x, 0.0f, 100.0f);
 
             ImGui::DragFloat("cameraSpeed", &State::GetInstance()->m_Camera->MovementSpeed, 0.1f, 1.0f, 10.0f, "%.00f ");
 
@@ -154,7 +151,4 @@ namespace OpenGl_3D{
 
 
 
-    std::shared_ptr<Camera> TestDrawBox::CurCamera() {
-        return m_Camera;
-    };
 }

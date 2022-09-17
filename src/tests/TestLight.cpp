@@ -65,7 +65,6 @@ namespace OpenGl_3D{
         m_LayOut->Push<float>(3);
         m_LayOut->Push<float>(3);
 
-
         m_VAO = std::make_unique<VertexArray>();
 
         m_VAO->AddBuffer(*m_VertexBuffer,*m_LayOut);
@@ -73,10 +72,6 @@ namespace OpenGl_3D{
         m_LightShader = std::make_unique<Shader>("../assert/shader/light.vs","../assert/shader/light.fs");
 
         m_Shader = std::make_unique<Shader>("../assert/shader/light_object.vs","../assert/shader/light_object.fs");
-
-        m_Camera = std::make_shared<Camera>(glm::vec3(0.0f, 0.0f, 3.0f),glm::vec3(0.0f, 1.0f, 0.0f),YAW, PITCH);
-
-        m_Proj = glm::perspective(glm::radians(m_Camera->Zoom), 1280/720.0f, 0.1f, 100.0f);
 
         lightColor = glm::vec3(1.0f, 1.0f, 1.0f);
 
@@ -108,13 +103,14 @@ namespace OpenGl_3D{
         auto p2 = m * glm::vec4(0.0,0.0,0.0,1.0) ;
 
 
-        auto m_View  = m_Camera->GetViewMatrix();
+        auto m_View  = State::GetInstance()->GetCamera()->GetViewMatrix();
 
         m_LightShader->setVec3("lightColor",lightColor.x,lightColor.y,lightColor.z);
 
         m_LightShader->setMat4("model",m);
         m_LightShader->setMat4("view",m_View);
-        m_LightShader->setMat4("projection",m_Proj);
+        auto proj = State::GetInstance()->GetCamera()->getProjectionMatrix();
+        m_LightShader->setMat4("projection",proj);
 
         glDrawArrays(GL_TRIANGLES, 0, 36);
 
@@ -131,8 +127,8 @@ namespace OpenGl_3D{
         m_Shader->setVec3("objectColor",0.3f,0.8f,0.3f);
         m_Shader->setMat4("model",model1);
         m_Shader->setMat4("view",m_View);
-        m_Shader->setMat4("projection",m_Proj);
-        m_Shader->setVec3("viewPos", m_Camera->Position.x,m_Camera->Position.y,m_Camera->Position.z);
+        m_Shader->setMat4("projection",proj);
+        m_Shader->setVec3("viewPos", State::GetInstance()->GetCamera()->Position.x,State::GetInstance()->GetCamera()->Position.y,State::GetInstance()->GetCamera()->Position.z);
         auto ambient = State::GetInstance()->m_Materials->GetAmbient(items[style_idx]);
         auto diffuse = State::GetInstance()->m_Materials->GetDiffuse(items[style_idx]);
         auto specular = State::GetInstance()->m_Materials->GetSpecular(items[style_idx]);
@@ -211,8 +207,5 @@ namespace OpenGl_3D{
         ImGui::End();
     }
 
-    std::shared_ptr<Camera> TestLight::CurCamera() {
-        return m_Camera;
-    }
 
 }

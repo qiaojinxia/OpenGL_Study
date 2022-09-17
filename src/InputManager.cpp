@@ -54,8 +54,8 @@ namespace OpenGl_3D{
 
 }
 
-float InputManager::lastX = 640.0f;
-float InputManager::lastY = 360.0f;
+float InputManager::lastX = State::SCR_WIDTH / 2.0f;
+float InputManager::lastY = State::SCR_HEIGHT / 2.0f;
 
 void InputManager::scroll_callback(GLFWwindow* window, double x_offset, double y_offset){
     State& state = *State::GetInstance();
@@ -89,6 +89,8 @@ void InputManager::mouse_callback(GLFWwindow* window, double x_pos, double y_pos
 }
 
     void InputManager::framebuffer_size_callback(GLFWwindow* window, int width, int height){
+        State::SCR_WIDTH = width;
+        State::SCR_HEIGHT = height;
         glViewport(0, 0, width, height);
 }
 

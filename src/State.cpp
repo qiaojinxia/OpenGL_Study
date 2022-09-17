@@ -4,7 +4,8 @@
 
 #include "State.h"
 namespace OpenGl_3D{
-
+    unsigned int State::SCR_WIDTH = 1280 ;
+    unsigned int State::SCR_HEIGHT = 720 ;
     State* State::m_State = 0;
 
     State::State(){}
@@ -18,6 +19,8 @@ namespace OpenGl_3D{
     std::shared_ptr<Camera> State::GetCamera(){
         return m_Camera;
     }
+
+
 
     void State::PushInput(char value){
         m_InputStack.push_back(value);
@@ -41,4 +44,8 @@ namespace OpenGl_3D{
         }
         return false;
     }
+
+
+
+
 }

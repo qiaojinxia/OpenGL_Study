@@ -17,14 +17,12 @@ namespace OpenGl_3D {
         virtual void OnUpdate(float deltaTime) override;
         virtual void OnRender() override;
         virtual void OnImGuiRender() override;
-        std::shared_ptr<Camera> CurCamera() override;
 
     public:
-        std::shared_ptr<Camera> m_Camera;
         std::unique_ptr<Model> m_Model;
         std::unique_ptr<Shader> m_Shader;
-        glm::mat4 m_Proj;
         glm::vec3 lightColor;
+        glm::vec3  lightDir{-0.2f, -1.0f, -0.3f};
     };
 }
 

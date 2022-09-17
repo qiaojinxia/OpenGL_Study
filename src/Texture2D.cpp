@@ -6,7 +6,7 @@
 #include "Render.h"
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
-#include <GLFW/glfw3.h>
+
 
 namespace OpenGl_3D{
     Texture2D::Texture2D(const char* texTurePath) {

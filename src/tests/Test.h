@@ -18,7 +18,6 @@ namespace OpenGl_3D{
         virtual void OnUpdate(float deltaTime) {}
         virtual void OnRender() {}
         virtual void OnImGuiRender() {}
-		virtual std::shared_ptr<Camera> CurCamera(){ return nullptr;} ;
     };
 
     class TestMenu:public Test{

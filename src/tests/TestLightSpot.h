@@ -18,14 +18,11 @@ namespace OpenGl_3D{
         void OnUpdate(float deltaTime) override;
         void OnRender() override;
         void OnImGuiRender() override;
-        std::shared_ptr<Camera> CurCamera() override;
     private:
         std::unique_ptr<VertexBuffer> m_VertexBuffer;
         std::unique_ptr<Shader> m_Shader,m_LightShader;
         std::unique_ptr< VertexBufferLayout> m_LayOut;
         std::unique_ptr<VertexArray> m_VAO;
-        glm::mat4 m_Proj;
-        std::shared_ptr<Camera> m_Camera;
         glm::vec3 lightColor;
         std::unique_ptr<Texture2D> m_Texture1,m_Texture2;
     };

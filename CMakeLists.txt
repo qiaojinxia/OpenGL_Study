@@ -110,6 +110,13 @@ add_executable(${PROJECT_NAME}
         src/tests/TestLoadModel.h
         src/tests/TestLoadModel.cpp
 
+        src/TextureCube.h
+        src/TextureCube.cpp
+
+
+        src/SkyBox.h
+        src/SkyBox.cpp
+
         src/Model.h
         src/Model.cpp
 

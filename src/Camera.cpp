@@ -3,6 +3,7 @@
 //
 
 #include "Camera.h"
+#include "State.h"
 
 namespace OpenGl_3D{
     void Camera::ProcessKeyboard(Camera_Movement direction, float deltaTime){
@@ -63,14 +64,17 @@ namespace OpenGl_3D{
         Up    = glm::normalize(glm::cross(Right, Front));
     }
 
-
-    Camera::Camera(glm::vec3 position, glm::vec3 up, float yaw, float pitch):  Front (glm::vec3(0.0f, 0.0f, -1.0f)),Zoom(ZOOM),MouseSensitivity(SENSITIVITY) {
-
-            Position = position;
-            WorldUp = up;
-            Yaw = yaw;
-            Pitch = pitch;
-            updateCameraVectors();
+    Camera::Camera(float posX, float posY, float posZ, float upX, float upY, float upZ, float yaw, float pitch):Front(glm::vec3(0.0f, 0.0f, -1.0f)), MovementSpeed(SPEED), MouseSensitivity(SENSITIVITY), Zoom(ZOOM) {
+        Position = glm::vec3(posX, posY, posZ);
+        WorldUp = glm::vec3(upX, upY, upZ);
+        Yaw = yaw;
+        Pitch = pitch;
+        updateCameraVectors();
     }
+
+    glm::mat4 Camera::getProjectionMatrix() {
+        return glm::perspective(glm::radians(Zoom),State::SCR_WIDTH/float(State::SCR_HEIGHT),0.1f,100.0f);
+    }
+
 
 }

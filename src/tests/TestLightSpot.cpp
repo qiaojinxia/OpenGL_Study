@@ -90,10 +90,6 @@ namespace OpenGl_3D{
 
         m_Shader = std::make_unique<Shader>("../assert/shader/light_spot.vs","../assert/shader/light_spot.fs");
 
-        m_Camera = std::make_shared<Camera>(glm::vec3(0.0f, 0.0f, 3.0f),glm::vec3(0.0f, 1.0f, 0.0f),YAW, PITCH);
-
-        m_Proj = glm::perspective(glm::radians(m_Camera->Zoom), 1280/720.0f, 0.1f, 100.0f);
-
         lightColor = glm::vec3(1.0f, 1.0f, 1.0f);
 
         m_Texture1 = std::make_unique<Texture2D>("../assert/texture/box_wood.jpg");
@@ -113,13 +109,14 @@ namespace OpenGl_3D{
         m_VAO->Bind();
         m_Shader->use();
 
-        auto m_View  = m_Camera->GetViewMatrix();
+        auto m_View  = State::GetInstance()->GetCamera()->GetViewMatrix();
         m_Shader->setVec3("light.direction", -0.2f, -1.0f, -0.3f);
         m_Shader->setVec3("objectColor",0.3f,0.8f,0.3f);
 
         m_Shader->setMat4("view",m_View);
-        m_Shader->setMat4("projection",m_Proj);
-        m_Shader->setVec3("viewPos", m_Camera->Position.x,m_Camera->Position.y,m_Camera->Position.z);
+        auto proj = State::GetInstance()->GetCamera()->getProjectionMatrix();
+        m_Shader->setMat4("projection",proj);
+        m_Shader->setVec3("viewPos", State::GetInstance()->GetCamera()->Position.x,State::GetInstance()->GetCamera()->Position.y,State::GetInstance()->GetCamera()->Position.z);
 
 
         auto ambient = State::GetInstance()->m_Materials->GetAmbient(items[style_idx]);
@@ -153,8 +150,8 @@ namespace OpenGl_3D{
         m_Shader->setFloat("light.quadratic", 0.032f);
 
 
-        m_Shader->setVec3("light.position",  m_Camera->Position);
-        m_Shader->setVec3("light.direction", m_Camera->Front);
+        m_Shader->setVec3("light.position",  State::GetInstance()->GetCamera()->Position);
+        m_Shader->setVec3("light.direction", State::GetInstance()->GetCamera()->Front);
         m_Shader->setFloat("light.cutOff",   glm::cos(glm::radians(0.125f)));
         m_Shader->setFloat("light.outerCutOff",   glm::cos(glm::radians(0.175f)));
 
@@ -220,7 +217,5 @@ namespace OpenGl_3D{
         ImGui::End();
     }
 
-    std::shared_ptr<Camera> TestLightSpot::CurCamera() {
-        return m_Camera;
-    }
+
 }

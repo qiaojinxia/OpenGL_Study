@@ -6,15 +6,11 @@ static bool RandomColor;
 
 #include "State.h"
 #include "Render.h"
-static char * path = "../assert/Iron_Man_Mark_44/Iron_Man_Mark_44_Hulkbuster_fbx.FBX";
+static char * path = "../assert/nanosuit/nanosuit.obj";
 namespace OpenGl_3D{
     TestLoadModel::TestLoadModel(){
 
         m_Shader = std::make_unique<Shader>("../assert/shader/model.vs","../assert/shader/model.fs");
-
-        m_Camera = std::make_shared<Camera>(glm::vec3(0.0f, 0.0f, 3.0f),glm::vec3(0.0f, 1.0f, 0.0f),YAW, PITCH);
-
-        m_Proj = glm::perspective(glm::radians(m_Camera->Zoom), 1280/720.0f, 0.1f, 100.0f);
 
         m_Model =  std::make_unique<Model>(path);
 
@@ -35,11 +31,11 @@ namespace OpenGl_3D{
         GLCall(glClearColor(0.1,0.1,0.1,0.0));
         GLCall(glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT));
         m_Shader->use();
-        auto m_View  = m_Camera->GetViewMatrix();
+        auto m_View  = State::GetInstance()->GetCamera()->GetViewMatrix();
         glm::mat4 model(1.0f);
-        model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f)); // translate it down so it's at the center of the scene
-        model = glm::scale(model, glm::vec3(0.01f, 0.01f, 0.1f));	//
-
+        model = glm::scale(model, glm::vec3(0.007f, 0.007f, 0.007f));	//
+        float angle = 360.0 * sin(State::GetInstance()->lastFrame) ; // deg->rad
+        model = glm::rotate(model,angle,glm::vec3(0.0,1.0,0.0));
         // lighting
         glm::vec3 lightPos(3.2f, 3.0f, 3.0f);
         if (RandomColor){
@@ -50,7 +46,7 @@ namespace OpenGl_3D{
 
         glm::vec3 diffuseColor = lightColor   * glm::vec3(0.9f); // 降低影响
         glm::vec3 ambientColor = diffuseColor * glm::vec3(0.7f); // 很低的影响
-        m_Shader->setVec3("viewPos", m_Camera->Position.x,m_Camera->Position.y,m_Camera->Position.z);
+        m_Shader->setVec3("viewPos", State::GetInstance()->GetCamera()->Position.x,State::GetInstance()->GetCamera()->Position.y,State::GetInstance()->GetCamera()->Position.z);
 
         m_Shader->setVec3("light.ambient",  ambientColor.x,ambientColor.y,ambientColor.z);
         m_Shader->setVec3("light.diffuse",  diffuseColor.x,diffuseColor.y,diffuseColor.z); // 将光照调暗了一些以搭配场景
@@ -61,11 +57,12 @@ namespace OpenGl_3D{
         m_Shader->setFloat("light.quadratic", quadratic);
         m_Shader->setVec3("light.position",lightPos.x, lightPos.y, lightPos.z);
 
-        m_Shader->setVec3("light.direction", -0.2f, -1.0f, -0.3f);
+        m_Shader->setVec3("light.direction", lightDir.x, lightDir.y, lightDir.z);
         m_Shader->setFloat("material.shininess", 	0.7);
         m_Shader->setMat4("model",model);
         m_Shader->setMat4("view",m_View);
-        m_Shader->setMat4("projection",m_Proj);
+        auto proj = State::GetInstance()->GetCamera()->getProjectionMatrix();
+        m_Shader->setMat4("projection",proj);
         m_Model ->Draw(*m_Shader);
 
     }
@@ -83,10 +80,8 @@ namespace OpenGl_3D{
         ImGui::SliderFloat("light linear", &linear,0.0f,1.0f); // Edit 3 floats representing a color
         ImGui::SliderFloat("light quadratic", &quadratic,0.0f,1.0f); // Edit 3 floats representing a color
         ImGui::SliderFloat("light constant", &constant,0.0f,1.0f); // Edit 3 floats representing a color
-
+        ImGui::SliderFloat3("light direction", (float*)&lightDir.x,0.0f,1.0f); // Edit 3 floats representing a color
         ImGui::End();
     }
-    std::shared_ptr<Camera> TestLoadModel::CurCamera() {
-        return m_Camera;
-    }
+
 }
