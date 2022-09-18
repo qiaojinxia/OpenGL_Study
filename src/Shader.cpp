@@ -49,12 +49,12 @@ namespace OpenGl_3D{
         GLCall(glCompileShader(vertex));
         checkCompileErrors(vertex, "VERTEX");
         // fragment Shader
-        fragment = glCreateShader(GL_FRAGMENT_SHADER);
+        GLCall(fragment = glCreateShader(GL_FRAGMENT_SHADER));
         GLCall(glShaderSource(fragment, 1, &fShaderCode, NULL));
         GLCall(glCompileShader(fragment));
         checkCompileErrors(fragment, "FRAGMENT");
         // shader Program
-        ID = glCreateProgram();
+        GLCall(ID = glCreateProgram());
         GLCall(glAttachShader(ID, vertex));
         GLCall(glAttachShader(ID, fragment));
         GLCall(glLinkProgram(ID));
@@ -103,7 +103,16 @@ namespace OpenGl_3D{
     }
 
     void Shader::setMat4(const string &name, glm::mat4 &value) const {
-        GLCall(glUniformMatrix4fv(glGetUniformLocation(ID, name.c_str()),1, GL_FALSE,glm::value_ptr(value)));
+        GLCall(glUniformMatrix4fv(glGetUniformLocation(ID, name.c_str()), 1, GL_FALSE, &value[0][0]));
+    }
+
+    void Shader::setVec4(const std::string &name, const glm::vec4 &value) const
+    {
+        GLCall(glUniform4fv(glGetUniformLocation(ID, name.c_str()), 1, &value[0]));
+    }
+    void Shader::setVec4(const std::string &name, float x, float y, float z, float w) const
+    {
+        GLCall(glUniform4f(glGetUniformLocation(ID, name.c_str()), x, y, z, w));
     }
 
     unsigned int Shader::GetRenderID() {
@@ -114,8 +123,18 @@ namespace OpenGl_3D{
         GLCall(glad_glUniform3f(glGetUniformLocation(ID, name.c_str()),f1,f2,f3));
     }
 
-    void Shader::setVec3(const string &name, glm::vec3 &v) const {
-        GLCall(glad_glUniform3f(glGetUniformLocation(ID, name.c_str()),v.x,v.y,v.z));
+    void Shader::setVec3(const string &name, const glm::vec3 &value) const {
+        GLCall(glUniform3fv(glGetUniformLocation(ID, name.c_str()), 1, &value[0]));
+    }
+
+    void Shader::setMat2(const std::string &name, const glm::mat2 &mat) const
+    {
+        GLCall(glUniformMatrix2fv(glGetUniformLocation(ID, name.c_str()), 1, GL_FALSE, &mat[0][0]));
+    }
+    // ------------------------------------------------------------------------
+    void Shader::setMat3(const std::string &name, const glm::mat3 &mat) const
+    {
+        GLCall(glUniformMatrix3fv(glGetUniformLocation(ID, name.c_str()), 1, GL_FALSE, &mat[0][0]));
     }
 
 }

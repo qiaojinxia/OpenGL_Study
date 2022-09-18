@@ -7,6 +7,7 @@
 #include "Camera.h"
 #include <vector>
 #include "vendor/MaterialReader.h"
+#include "SkyBox.h"
 namespace OpenGl_3D{
     class State{
     public:
@@ -19,6 +20,7 @@ namespace OpenGl_3D{
         bool CheckInput(char);
         static unsigned int SCR_WIDTH ;
         static unsigned int SCR_HEIGHT ;
+        std::shared_ptr<SkyBox> skybox;
     public:
         std::shared_ptr<Reader::MaterialReader> m_Materials;
         float lastFrame{0};
@@ -27,6 +29,8 @@ namespace OpenGl_3D{
         std::shared_ptr<glm::mat4>  m_Proj;
     private:
         static State* m_State;
+
+
         std::vector<char> m_InputStack;
     };
 }

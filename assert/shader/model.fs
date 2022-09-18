@@ -25,6 +25,7 @@ struct Light {
 uniform vec3 viewPos;
 uniform Material material;
 uniform Light light;
+uniform samplerCube skybox;
 
 void main()
 {
@@ -45,7 +46,18 @@ void main()
     vec3 viewDir = normalize(viewPos - FragPos);
     vec3 reflectDir = reflect(-lightDir, norm);
     float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
-    vec3 specular = light.specular * spec * texture(material.specular1, TexCoords).rgb;
+    vec3 specular = light.specular * spec * texture(material.specular1, TexCoords).rgb * 0.7;
+
+//     vec3 I = normalize(FragPos - viewPos);
+//     vec3 R = reflect(I, norm);
+//     vec3 reflect = texture(skybox, R).rgb ;
+
+    float ratio = 1.00 / 1.52;
+    vec3 I = normalize(FragPos - viewPos);
+    vec3 R = refract(I, norm, ratio);
+    vec3 Refractive = texture(skybox, R).rgb;
+
+//     specular += reflect;
 
     //距离衰减
     ambient  *= attenuation;
@@ -53,5 +65,5 @@ void main()
     specular *= attenuation;
 
     vec3 result = ambient + diffuse + specular;
-    FragColor = vec4(result, 1.0);
+    FragColor = vec4(Refractive, 1.0);
 }

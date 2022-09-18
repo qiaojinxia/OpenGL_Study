@@ -95,7 +95,6 @@ namespace OpenGl_3D{
 
         float angle = 360.0 * sin(State::GetInstance()->lastFrame) ; // deg->rad
         glm::mat4 m = glm::mat4 (1.0); // unit matrix
-        m = glm::scale(m,glm::vec3 (0.007,0.007,0.007));
         m = glm::translate(m,p1);
         m = glm::translate(m,-center); // he
         m = glm::rotate(m,angle,glm::vec3(0.0,0.0,1.0));
@@ -109,7 +108,7 @@ namespace OpenGl_3D{
 
         m_LightShader->setMat4("model",m);
         m_LightShader->setMat4("view",m_View);
-        auto proj = State::GetInstance()->GetCamera()->getProjectionMatrix();
+        auto proj = State::GetInstance()->GetCamera()->GetProjectionMatrix();
         m_LightShader->setMat4("projection",proj);
 
         glDrawArrays(GL_TRIANGLES, 0, 36);

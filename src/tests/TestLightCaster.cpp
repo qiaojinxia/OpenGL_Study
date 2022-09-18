@@ -111,7 +111,7 @@ namespace OpenGl_3D{
         m_Shader->setVec3("objectColor",0.3f,0.8f,0.3f);
 
         m_Shader->setMat4("view",m_View);
-        auto proj = State::GetInstance()->GetCamera()->getProjectionMatrix();
+        auto proj = State::GetInstance()->GetCamera()->GetProjectionMatrix();
         m_Shader->setMat4("projection",proj);
         m_Shader->setVec3("viewPos", State::GetInstance()->GetCamera()->Position.x,State::GetInstance()->GetCamera()->Position.y,State::GetInstance()->GetCamera()->Position.z);
 
@@ -148,7 +148,6 @@ namespace OpenGl_3D{
         m_Shader->setFloat("light.quadratic", 0.032f);
         m_Shader->setVec3("light.position",lightPos.x, lightPos.y, lightPos.z);
         glm::mat4 model(1.0f);
-        model = glm::scale(model, glm::vec3(0.01, 0.01, 0.01));
         for (unsigned int i = 0; i < 10; i++)
         {
             model = glm::translate(model, cubePositions[i]);
@@ -163,7 +162,6 @@ namespace OpenGl_3D{
         m_LightShader->setVec3("lightColor",lightColor.x,lightColor.y,lightColor.z);
         glm::mat4  model1(1.0f);
         model1 = glm::translate(model1,lightPos);
-        model1 = glm::scale(model1, glm::vec3(0.2f, 0.2f, 0.2f));
         m_LightShader->setMat4("model",model1);
         m_LightShader->setMat4("view",m_View);
         m_LightShader->setMat4("projection",proj);

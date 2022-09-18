@@ -4,18 +4,17 @@
 
 #include "SkyBox.h"
 #include "State.h"
-
+static std::vector<std::string> faces
+        {
+                "../assert/texture/skybox/right.jpg",
+                "../assert/texture/skybox/left.jpg",
+                "../assert/texture/skybox/top.jpg",
+                "../assert/texture/skybox/bottom.jpg",
+                "../assert/texture/skybox/front.jpg",
+                "../assert/texture/skybox/back.jpg"
+        };
 namespace OpenGl_3D {
     SkyBox::SkyBox() {
-        std::vector<std::string> faces
-                {
-                        "../assert/texture/skybox/right.jpg",
-                        "../assert/texture/skybox/left.jpg",
-                        "../assert/texture/skybox/top.jpg",
-                        "../assert/texture/skybox/bottom.jpg",
-                        "../assert/texture/skybox/front.jpg",
-                        "../assert/texture/skybox/back.jpg"
-                };
 
         float skyboxVertices[] = {
                 // positions
@@ -62,6 +61,7 @@ namespace OpenGl_3D {
                 1.0f, -1.0f,  1.0f
         };
 
+
         m_VertexBuffer = std::make_unique<VertexBuffer>(skyboxVertices,sizeof(skyboxVertices));
 
         m_LayOut = std::make_unique<VertexBufferLayout>();
@@ -82,18 +82,21 @@ namespace OpenGl_3D {
     }
 
     void SkyBox::Draw() {
-        glDepthFunc(GL_LEQUAL);
+        glEnable(GL_TEXTURE_GEN_S); //enable texture coordinate generation
+        glEnable(GL_TEXTURE_GEN_T);
+        GLCall(glDepthFunc(GL_LEQUAL));
         m_Shader->use();
         auto view = glm::mat4(glm::mat3((State::GetInstance()->GetCamera()->GetViewMatrix())));
-        m_Shader->setMat4("view",view);
-        auto proj = State::GetInstance()->GetCamera()->getProjectionMatrix();
-        m_VAO->Bind();
+        auto proj = State::GetInstance()->GetCamera()->GetProjectionMatrix();
         m_Shader->setMat4("projection", proj);
+        m_Shader->setMat4("view",view);
         m_VAO->Bind();
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_CUBE_MAP, m_tBox->textureID);
-        glDrawArrays(GL_TRIANGLES, 0, 36);
+        GLCall(glActiveTexture(GL_TEXTURE0))
+        GLCall(glBindTexture(GL_TEXTURE_CUBE_MAP, m_tBox->textureID))
+        GLCall(glDrawArrays(GL_TRIANGLES, 0, 36))
         m_VAO->Unbind();
-        glDepthFunc(GL_LESS);
+        GLCall(glDepthFunc(GL_LESS))
+
     }
+
 }

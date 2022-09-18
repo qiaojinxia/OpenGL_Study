@@ -15,6 +15,9 @@ namespace OpenGl_3D{
         m_Model =  std::make_unique<Model>(path);
 
         lightColor = glm::vec3(1.0f, 1.0f, 1.0f);
+
+        m_Shader ->use();
+        m_Shader->setInt("skybox",1);
     }
 
     TestLoadModel::~TestLoadModel(){
@@ -33,7 +36,8 @@ namespace OpenGl_3D{
         m_Shader->use();
         auto m_View  = State::GetInstance()->GetCamera()->GetViewMatrix();
         glm::mat4 model(1.0f);
-        model = glm::scale(model, glm::vec3(0.007f, 0.007f, 0.007f));	//
+        model = glm::translate(model, glm::vec3(0.0f, -2.0f, 0.0f));
+        model = glm::scale(model, glm::vec3(0.3f, 0.3f, 0.3f));	//
         float angle = 360.0 * sin(State::GetInstance()->lastFrame) ; // deg->rad
         model = glm::rotate(model,angle,glm::vec3(0.0,1.0,0.0));
         // lighting
@@ -61,8 +65,12 @@ namespace OpenGl_3D{
         m_Shader->setFloat("material.shininess", 	0.7);
         m_Shader->setMat4("model",model);
         m_Shader->setMat4("view",m_View);
-        auto proj = State::GetInstance()->GetCamera()->getProjectionMatrix();
+
+        auto proj = State::GetInstance()->GetCamera()->GetProjectionMatrix();
         m_Shader->setMat4("projection",proj);
+        m_Shader->setInt("skybox",1);
+        glActiveTexture(GL_TEXTURE1);
+        glBindTexture(GL_TEXTURE_CUBE_MAP,State::GetInstance()->skybox->GetTextureID());
         m_Model ->Draw(*m_Shader);
 
     }
@@ -75,7 +83,6 @@ namespace OpenGl_3D{
             else
                 RandomColor = true;
         }
-//        ImGui::SliderFloat3("Cube Pos", (float*)&cubePositions.x,0.0,50.0); // Edit 3 floats representing a color
         ImGui::ColorEdit3("light color", (float*)&lightColor.x); // Edit 3 floats representing a color
         ImGui::SliderFloat("light linear", &linear,0.0f,1.0f); // Edit 3 floats representing a color
         ImGui::SliderFloat("light quadratic", &quadratic,0.0f,1.0f); // Edit 3 floats representing a color

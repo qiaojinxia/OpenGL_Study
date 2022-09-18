@@ -15,6 +15,7 @@
 #include "tests/TestLightSpot.h"
 #include "tests/TestShaderDissolution.h"
 #include "tests/TestLoadModel.h"
+#include "tests/TestCubeMap.h"
 #include "imgui/imgui.h"
 #include "imgui/backends/imgui_impl_glfw.h"
 #include "imgui/backends/imgui_impl_opengl3.h"
@@ -35,10 +36,11 @@ Test* lastTest = nullptr;
 
 int main()
 {
+
     State::SCR_HEIGHT = 720;
     State::SCR_WIDTH = 1280;
     const char* glsl_version = "#version 150";
-    auto win = std::make_unique<Window>(State::SCR_WIDTH,State::SCR_HEIGHT,"learnOpenGL");
+    auto win = std::make_unique<Window>(State::SCR_WIDTH,State::SCR_HEIGHT,"草帽boy的渲染器");
 
     // 通知GLFW将我们窗口的上下文设置为当前线程的主上下文
     glfwMakeContextCurrent(win->getWindowHandler());
@@ -78,8 +80,12 @@ int main()
     testMenu->RegisterTest<TestLightSpot>("SpotLight");
     testMenu->RegisterTest<TestShaderDissolution>("Dissolution");
     testMenu->RegisterTest<TestLoadModel>("Load model");
-    SkyBox skybox;
+    testMenu->RegisterTest<TestCubeMap>("Load cub");
+
     glEnable(GL_DEPTH_TEST);
+
+
+    State::GetInstance() -> skybox = std::make_shared<SkyBox>();
     glfwSwapInterval(1); // Enable vsync
     State::GetInstance()->m_Materials =std::make_shared<Reader::MaterialReader>("../assert/material/material");
 
@@ -102,6 +108,9 @@ int main()
         {
             currentTest->OnUpdate(0.0f);
             currentTest->OnRender();
+            if (currentTest != testMenu){
+                State::GetInstance() -> skybox->Draw();
+            }
             ImGui::Begin("Test");
             if (currentTest != testMenu && ImGui::Button("<-"))
             {
@@ -123,9 +132,6 @@ int main()
         if (currentTest != testMenu && lastTest != currentTest  ){
             lastTest = currentTest;
             State::GetInstance()->m_Camera  = std::make_shared<Camera>(glm::vec3(0.0f, 0.0f, 3.0f));
-        }
-        if (currentTest != testMenu){
-             skybox.Draw();
         }
         ImGui::End();
 

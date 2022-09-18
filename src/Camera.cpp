@@ -72,8 +72,8 @@ namespace OpenGl_3D{
         updateCameraVectors();
     }
 
-    glm::mat4 Camera::getProjectionMatrix() {
-        return glm::perspective(glm::radians(Zoom),State::SCR_WIDTH/float(State::SCR_HEIGHT),0.1f,100.0f);
+    glm::mat4 Camera::GetProjectionMatrix() {
+        return glm::perspective(Zoom ,(float)State::SCR_WIDTH/(float)State::SCR_HEIGHT,0.1f,500.0f);
     }
 
 

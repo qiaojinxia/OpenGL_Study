@@ -81,6 +81,8 @@ add_executable(${PROJECT_NAME}
         src/tests/TestDrawBox.cpp
         src/tests/TestDrawBox.h
 
+        src/tests/TestCubeMap.cpp
+        src/tests/TestCubeMap.h
 
         src/tests/TestLight.cpp
         src/tests/TestLight.h
@@ -100,6 +102,7 @@ add_executable(${PROJECT_NAME}
 
         src/Mesh.h
         src/Mesh.cpp
+
 
         src/tests/TestShaderDissolution.h
         src/tests/TestShaderDissolution.cpp

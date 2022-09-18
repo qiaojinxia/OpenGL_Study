@@ -8,20 +8,30 @@
 namespace OpenGl_3D{
     Scene::Scene(){
 
-    };
+    }
     Scene::~Scene(){
 
-    };
+    }
     void Scene::Init(){
 
-    };
+    }
+
+    Scene* Scene::GetInstance(){
+        if(!m_Sence)
+            m_Sence = new Scene();
+        return m_Sence;
+    }
+
     void Scene::OnUiRender(){
-        ImGui::Begin("Plane");
-        const char* items[] = { "Apple", "Banana", "Cherry", "Kiwi", "Mango", "Orange", "Pineapple", "Strawberry", "Watermelon" };
-        static int item_current = 1;
-        if ImGui::ListBox("listbox", &item_current, items, IM_ARRAYSIZE(items), 10){
-            
-        }
-        ImGui::End();
-    };
+//        ImGui::Begin("Plane");
+//        const char* items[] = { "Apple", "Banana", "Cherry", "Kiwi", "Mango", "Orange", "Pineapple", "Strawberry", "Watermelon" };
+//        static int item_current = 1;
+//        if ImGui::ListBox("listbox", &item_current, items, IM_ARRAYSIZE(items), 10){
+//
+//        }
+//        ImGui::End();
+    }
+    void Scene::AddCamera(std::shared_ptr<Camera> camera){
+        cameras.push_back(camera);
+    }
 }

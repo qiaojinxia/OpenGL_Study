@@ -24,7 +24,7 @@ namespace OpenGl_3D {
     const float PITCH = 0.0f;
     const float SPEED = 2.5f;
     const float SENSITIVITY = 0.1f;
-    const float ZOOM = 45.0f;
+    const float ZOOM = 90.0f;
 
     class Camera {
     public:
@@ -37,9 +37,10 @@ namespace OpenGl_3D {
             Pitch = pitch;
             updateCameraVectors();
         }
+
         Camera(float posX, float posY, float posZ, float upX, float upY, float upZ, float yaw, float pitch);
         glm::mat4 GetViewMatrix();
-        glm::mat4 getProjectionMatrix();
+        glm::mat4 GetProjectionMatrix();
         void ProcessMouseScroll(float y_offset);
         void ProcessKeyboard(Camera_Movement direction, float deltaTime);
 
@@ -62,7 +63,7 @@ namespace OpenGl_3D {
         float Yaw;
         float Pitch;
         // camera options
-        float MovementSpeed{1};
+        float MovementSpeed{10};
         float MouseSensitivity;
         float Zoom;
 

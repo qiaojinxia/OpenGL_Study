@@ -108,13 +108,12 @@ namespace OpenGl_3D{
         {
 
             glm::mat4 model;
-            model = glm::scale(model, glm::vec3(0.05, 0.05, 0.05));
             model = glm::translate(model, cubePositions[i]);
 
             model = glm::rotate(model, (float)glfwGetTime() * glm::radians(50.0f)* rotateSpeed, glm::vec3(0.5f, 1.0f, 0.0f));
             m_Shader->setMat4("model",model);
             m_Shader->setMat4("view",m_View);
-            auto proj = State::GetInstance()->GetCamera()->getProjectionMatrix();
+            auto proj = State::GetInstance()->GetCamera()->GetProjectionMatrix();
             m_Shader->setMat4("projection",proj);
             glDrawArrays(GL_TRIANGLES, 0, 36);
         }
