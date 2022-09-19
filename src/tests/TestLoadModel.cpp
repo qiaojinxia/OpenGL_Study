@@ -7,10 +7,11 @@ static bool RandomColor;
 #include "State.h"
 #include "Render.h"
 static char * path = "../assert/nanosuit/nanosuit.obj";
+
 namespace OpenGl_3D{
     TestLoadModel::TestLoadModel(){
 
-        m_Shader = std::make_unique<Shader>("../assert/shader/model.vs","../assert/shader/model.fs");
+        m_Shader = std::make_unique<Shader>("../assert/shader/model.vs","../assert/shader/light/diff_wrap1.fs");
 
         m_Model =  std::make_unique<Model>(path);
 
@@ -66,6 +67,12 @@ namespace OpenGl_3D{
         m_Shader->setMat4("model",model);
         m_Shader->setMat4("view",m_View);
 
+        m_Shader->setVec3("light.position",lightPos.x, lightPos.y, lightPos.z);
+        m_Shader->setVec3("light.position",lightPos.x, lightPos.y, lightPos.z);
+
+        m_Shader->setVec3("c1",Color1);
+        m_Shader->setVec3("c2",Color2);
+
         auto proj = State::GetInstance()->GetCamera()->GetProjectionMatrix();
         m_Shader->setMat4("projection",proj);
         m_Shader->setInt("skybox",1);
@@ -84,6 +91,9 @@ namespace OpenGl_3D{
                 RandomColor = true;
         }
         ImGui::ColorEdit3("light color", (float*)&lightColor.x); // Edit 3 floats representing a color
+        ImGui::ColorEdit3("Color1", (float*)&Color1.x); // Edit 3 floats representing a color
+        ImGui::ColorEdit3("Color2", (float*)&Color2.x); // Edit 3 floats representing a color
+
         ImGui::SliderFloat("light linear", &linear,0.0f,1.0f); // Edit 3 floats representing a color
         ImGui::SliderFloat("light quadratic", &quadratic,0.0f,1.0f); // Edit 3 floats representing a color
         ImGui::SliderFloat("light constant", &constant,0.0f,1.0f); // Edit 3 floats representing a color

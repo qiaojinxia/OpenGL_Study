@@ -22,6 +22,8 @@ namespace OpenGl_3D {
         std::unique_ptr<Model> m_Model;
         std::unique_ptr<Shader> m_Shader;
         glm::vec3 lightColor;
+        glm::vec3 Color1;
+        glm::vec3 Color2;
         glm::vec3  lightDir{-0.2f, -1.0f, -0.3f};
     };
 }

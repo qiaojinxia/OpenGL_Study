@@ -23,7 +23,7 @@ namespace OpenGl_3D {
     const float YAW = -90.0f;
     const float PITCH = 0.0f;
     const float SPEED = 2.5f;
-    const float SENSITIVITY = 0.1f;
+    const float SENSITIVITY = 1.0f;
     const float ZOOM = 90.0f;
 
     class Camera {
@@ -63,7 +63,7 @@ namespace OpenGl_3D {
         float Yaw;
         float Pitch;
         // camera options
-        float MovementSpeed{10};
+        float MovementSpeed{500};
         float MouseSensitivity;
         float Zoom;
 
