@@ -24,6 +24,9 @@ namespace OpenGl_3D {
         glm::vec3 lightColor;
         glm::vec3 Color1;
         glm::vec3 Color2;
+
+        float V1;
+        float V2;
         glm::vec3  lightDir{-0.2f, -1.0f, -0.3f};
     };
 }

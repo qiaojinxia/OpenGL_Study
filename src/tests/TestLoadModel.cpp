@@ -11,7 +11,7 @@ static char * path = "../assert/nanosuit/nanosuit.obj";
 namespace OpenGl_3D{
     TestLoadModel::TestLoadModel(){
 
-        m_Shader = std::make_unique<Shader>("../assert/shader/model.vs","../assert/shader/light/diff_wrap1.fs");
+        m_Shader = std::make_unique<Shader>("../assert/shader/model.vs","../assert/shader/light/common.fs");
 
         m_Model =  std::make_unique<Model>(path);
 
@@ -73,6 +73,9 @@ namespace OpenGl_3D{
         m_Shader->setVec3("c1",Color1);
         m_Shader->setVec3("c2",Color2);
 
+        m_Shader->setFloat("v1",V1);
+        m_Shader->setFloat("v2",V2);
+
         auto proj = State::GetInstance()->GetCamera()->GetProjectionMatrix();
         m_Shader->setMat4("projection",proj);
         m_Shader->setInt("skybox",1);
@@ -93,6 +96,9 @@ namespace OpenGl_3D{
         ImGui::ColorEdit3("light color", (float*)&lightColor.x); // Edit 3 floats representing a color
         ImGui::ColorEdit3("Color1", (float*)&Color1.x); // Edit 3 floats representing a color
         ImGui::ColorEdit3("Color2", (float*)&Color2.x); // Edit 3 floats representing a color
+
+        ImGui::SliderFloat("exp", &V1,0.0f,30.0f); // Edit 3 floats representing a color
+        ImGui::SliderFloat("scale", &V2,0.0f,10.0f); // Edit 3 floats representing a color
 
         ImGui::SliderFloat("light linear", &linear,0.0f,1.0f); // Edit 3 floats representing a color
         ImGui::SliderFloat("light quadratic", &quadratic,0.0f,1.0f); // Edit 3 floats representing a color
