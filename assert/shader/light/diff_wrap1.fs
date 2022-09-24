@@ -39,13 +39,25 @@ vec3 lerp (vec3 a, vec3 b, float x)
     return a + x * (b - a);
 }
 
+
+
 void main()
 {
+
+
      vec3 norm = normalize(Normal);
      vec3 lightDir = normalize(-light.direction);
      float l = max(dot(norm, lightDir),0.0) * 0.5 + 0.5;
-     float s = floor(l * 10) / 10;
-     vec3 r = lerp(c1,c2,s);
-//      float color =  step(light.constant,l);
-     FragColor = vec4(r,1.0);
+     float s = floor(l * 7) / 7;
+
+     vec3 I = normalize(FragPos - viewPos);
+     vec3 R = reflect(I, norm);
+     vec3 reflect = texture(skybox, R).rgb ;
+
+     vec3 r = texture(material.specular1, TexCoords).rgb ;
+     vec3 mid = (reflect * 0.2 + r)* 0.5 + 0.5;
+     FragColor = vec4(mid*s,1.0);
+
+
+
 }

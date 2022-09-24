@@ -23,6 +23,7 @@ include_directories(includes/glfw/include)
 include_directories(includes/glfw/include/GLFW)
 include_directories(includes/stb)
 include_directories(includes)
+include_directories(src/reflect)
 
 find_package(assimp)
 
@@ -86,6 +87,10 @@ add_executable(${PROJECT_NAME}
 
         src/tests/TestLight.cpp
         src/tests/TestLight.h
+
+
+        src/loader/BinaryFileReader.cpp
+        src/loader/BinaryFileReader.h
 
 
         src/tests/TestLightMap.cpp
